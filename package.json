@@ -4,7 +4,7 @@
   "description": "Legal documents and reporting system for PairShot - designed for Vercel deployment",
   "main": "index.html",
   "scripts": {
-    "build": "echo 'Static HTML build - no build process needed'",
+    "build": "mkdir -p public && cp -r *.html *.js *.css public/ 2>/dev/null || cp *.html public/",
     "dev": "npx http-server . -p 3000 -o",
     "start": "npx http-server . -p 8080",
     "deploy": "vercel --prod"
