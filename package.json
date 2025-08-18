@@ -1,0 +1,35 @@
+{
+  "name": "pairshot-legal-docs",
+  "version": "1.0.0",
+  "description": "Legal documents and reporting system for PairShot - designed for Vercel deployment",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Static HTML build - no build process needed'",
+    "dev": "npx http-server . -p 3000 -o",
+    "start": "npx http-server . -p 8080",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "legal-documents",
+    "privacy-policy",
+    "terms-of-service",
+    "reporting-system",
+    "pairshot",
+    "supabase",
+    "vercel"
+  ],
+  "author": "PairShot Team",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tenma-ai/pairshot-legal-docs.git"
+  },
+  "homepage": "https://pairshot-legal-docs.vercel.app"
+}
