@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -109,7 +109,9 @@
     </style>
     <script>
         // Language detection and text updates
-        document.addEventListener('DOMContentLoaded', function() {
+        // Check URL hash first, then browser language
+        function updateLanguage() {
+            const hash = window.location.hash.substring(1);
             const browserLang = navigator.language || navigator.userLanguage;
             const lang = browserLang.toLowerCase();
             
@@ -136,18 +138,40 @@
             
             // Determine which translation to use
             let currentLang = 'en'; // Default to English
-            if (lang.startsWith('ja')) {
+            
+            // First check URL hash
+            if (hash === 'japanese') {
                 currentLang = 'ja';
-            } else if (lang.startsWith('zh')) {
+            } else if (hash === 'chinese') {
                 currentLang = 'zh';
+            } else if (hash === 'english') {
+                currentLang = 'en';
+            } else {
+                // Fall back to browser language
+                if (lang.startsWith('ja')) {
+                    currentLang = 'ja';
+                } else if (lang.startsWith('zh')) {
+                    currentLang = 'zh';
+                }
             }
             
             // Apply translations
             const trans = translations[currentLang];
             document.title = trans.title;
-            document.getElementById('header-subtitle').textContent = trans.headerSubtitle;
-            document.getElementById('language-select-title').textContent = trans.languageSelectTitle;
-            document.getElementById('last-updated').textContent = trans.lastUpdated;
+            document.documentElement.lang = currentLang === 'zh' ? 'zh' : currentLang === 'ja' ? 'ja' : 'en';
+            
+            const headerSubtitle = document.getElementById('header-subtitle');
+            const languageSelectTitle = document.getElementById('language-select-title');
+            const lastUpdated = document.getElementById('last-updated');
+            
+            if (headerSubtitle) headerSubtitle.textContent = trans.headerSubtitle;
+            if (languageSelectTitle) languageSelectTitle.textContent = trans.languageSelectTitle;
+            if (lastUpdated) lastUpdated.textContent = trans.lastUpdated;
+        }
+        
+        // Run on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLanguage();
             
             // Smooth scroll to language sections
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -156,10 +180,15 @@
                     const target = document.querySelector(this.getAttribute('href'));
                     if (target) {
                         target.scrollIntoView({ behavior: 'smooth' });
+                        // Update language when clicking language links
+                        updateLanguage();
                     }
                 });
             });
         });
+        
+        // Also update on hash change
+        window.addEventListener('hashchange', updateLanguage);
     </script>
 </head>
 <body>
