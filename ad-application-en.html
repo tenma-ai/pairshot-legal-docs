@@ -273,17 +273,20 @@
         }
 
         .card-preview {
+            max-width: 400px;
+            margin: 20px auto;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.25);
             overflow: hidden;
-            margin-top: 20px;
-            perspective: 1000px;
+            position: relative;
+            aspect-ratio: 3 / 4;
         }
 
         .card-inner {
             position: relative;
             width: 100%;
+            height: 100%;
             transition: transform 0.6s;
             transform-style: preserve-3d;
         }
@@ -294,56 +297,93 @@
 
         .card-front,
         .card-back {
-            position: relative;
+            position: absolute;
             width: 100%;
+            height: 100%;
             backface-visibility: hidden;
         }
 
         .card-back {
-            position: absolute;
-            top: 0;
-            left: 0;
             transform: rotateY(180deg);
         }
 
-        .card-image {
+        /* Front: 2 photos stacked vertically */
+        .card-photos {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card-photo {
+            flex: 1;
             width: 100%;
-            aspect-ratio: 3/4;
             object-fit: cover;
             background: #f0f0f0;
         }
 
-        .card-content {
-            padding: 20px;
+        /* Back: 2 comment sections + link */
+        .card-comments {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 70px 20px 20px;
+            gap: 10px;
         }
 
-        .card-comment {
-            font-size: 1.1em;
-            line-height: 1.6;
-            color: #333;
-            margin-bottom: 15px;
+        .comment-section {
+            flex: 1;
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .female-comment {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .male-comment {
+            background: rgba(0, 191, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.08);
+            border: 1px solid rgba(0, 191, 255, 0.5);
+        }
+
+        .comment-text {
+            font-size: 14px;
+            line-height: 22px;
+            color: #000;
+            word-wrap: break-word;
+        }
+
+        .card-link-button {
+            margin: 10px 20px 20px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
         }
 
         .flip-button {
-            background: #f0f0f0;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 20px;
             cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .link-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 0;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.2em;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
+            font-size: 12px;
+            z-index: 10;
         }
 
         .info-box {
@@ -560,10 +600,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Link URL<span class="required">*</span></label>
-                        <input type="url" id="linkUrl" placeholder="https://" required>
+                        <label>Link URL (Optional)</label>
+                        <input type="url" id="linkUrl" placeholder="https://">
                         <div class="info-box">
-                            <p>This link will be displayed as a "Visit Site" button. Users will be redirected to your website when they click it.</p>
+                            <p>If you set a link, it will be displayed as a "Visit Site" button. Users can click it to visit your website. You can leave this blank.</p>
                         </div>
                     </div>
                 </div>
@@ -580,6 +620,20 @@
                 <div class="section">
                     <button type="button" class="btn-secondary" onclick="calculateCost()">💰 Cost Simulation</button>
                     <div id="costResult" class="hidden"></div>
+                </div>
+
+                <!-- Budget Calculator -->
+                <div class="section">
+                    <h2 class="section-title">💡 Calculate from Budget</h2>
+                    <div class="form-group">
+                        <label>Your Budget (¥)</label>
+                        <input type="number" id="budgetInput" placeholder="e.g. 100000" min="1000" step="1000">
+                        <div class="info-box">
+                            <p>Enter your budget to get optimal delivery parameter suggestions</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="calculateFromBudget()">🔄 Calculate from Budget</button>
+                    <div id="budgetResult" class="hidden"></div>
                 </div>
 
                 <!-- Submit -->
@@ -713,22 +767,24 @@
 
                 previewHTML = `
                     <div class="card-preview">
+                        <button class="flip-button" onclick="document.getElementById('cardInner').classList.toggle('flipped')">↻ Flip Card</button>
                         <div class="card-inner" id="cardInner">
                             <div class="card-front">
-                                <img src="${photo1}" class="card-image" alt="Photo 1">
-                                <div class="card-content">
-                                    <p class="card-comment">${comment1 || 'Please enter comment 1'}</p>
-                                    ${linkUrl ? `<button class="link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 Visit Site</button>` : ''}
-                                    <button class="flip-button" onclick="document.getElementById('cardInner').classList.toggle('flipped')">↻ Flip Card</button>
+                                <div class="card-photos">
+                                    <img src="${photo1}" class="card-photo" alt="Photo 1">
+                                    <img src="${photo2}" class="card-photo" alt="Photo 2">
                                 </div>
                             </div>
                             <div class="card-back">
-                                <img src="${photo2}" class="card-image" alt="Photo 2">
-                                <div class="card-content">
-                                    <p class="card-comment">${comment2 || 'Please enter comment 2'}</p>
-                                    ${linkUrl ? `<button class="link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 Visit Site</button>` : ''}
-                                    <button class="flip-button" onclick="document.getElementById('cardInner').classList.toggle('flipped')">↻ Flip Card</button>
+                                <div class="card-comments">
+                                    <div class="comment-section female-comment">
+                                        <p class="comment-text">${comment1 || 'Please enter comment 1'}</p>
+                                    </div>
+                                    <div class="comment-section male-comment">
+                                        <p class="comment-text">${comment2 || 'Please enter comment 2'}</p>
+                                    </div>
                                 </div>
+                                ${linkUrl ? `<button class="card-link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 Visit Site</button>` : ''}
                             </div>
                         </div>
                     </div>
@@ -738,11 +794,11 @@
 
                 previewHTML = `
                     <div class="card-preview">
-                        <img src="${photo1}" class="card-image" alt="Photo">
-                        <div class="card-content">
-                            <p class="card-comment">${caption || 'Please enter caption'}</p>
-                            ${linkUrl ? `<button class="link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 Visit Site</button>` : ''}
+                        <img src="${photo1}" class="card-photo" alt="Photo">
+                        <div class="friends-caption">
+                            <p class="caption-text">${caption || 'Please enter caption'}</p>
                         </div>
+                        ${linkUrl ? `<button class="card-link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 Visit Site</button>` : ''}
                     </div>
                 `;
             }
@@ -836,6 +892,130 @@
             } catch (error) {
                 console.error('Error calculating cost:', error);
                 alert('Error calculating cost. Please try again.');
+            }
+        }
+
+        async function calculateFromBudget() {
+            const budget = parseInt(document.getElementById('budgetInput').value);
+
+            if (!budget || budget < 1000) {
+                alert('Please enter a budget of at least ¥1,000');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${supabaseUrl}/rest/v1/rpc/get_yesterday_dau`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                });
+
+                const data = await response.json();
+                const yesterdayDAU = data || 100;
+                const targetImpressions = Math.floor(budget / 7);
+
+                const suggestions = [];
+
+                // Pattern 1: All users, home, random position
+                const pattern1Days = Math.min(Math.floor(targetImpressions / (yesterdayDAU * 0.25)), 30);
+                if (pattern1Days >= 7) {
+                    suggestions.push({
+                        duration: `${pattern1Days} days`,
+                        target: 'All users',
+                        placement: 'Home page',
+                        position: 'Random',
+                        impressions: Math.floor(yesterdayDAU * pattern1Days * 0.25),
+                        cost: Math.floor(yesterdayDAU * pattern1Days * 0.25) * 7
+                    });
+                }
+
+                // Pattern 2: Age targeting, home, 2nd position
+                const pattern2Days = Math.min(Math.floor(targetImpressions / (yesterdayDAU * 0.3 * 0.5)), 30);
+                if (pattern2Days >= 7) {
+                    suggestions.push({
+                        duration: `${pattern2Days} days`,
+                        target: 'Age targeting (~30%)',
+                        placement: 'Home page',
+                        position: '2nd card',
+                        impressions: Math.floor(yesterdayDAU * pattern2Days * 0.3 * 0.5),
+                        cost: Math.floor(yesterdayDAU * pattern2Days * 0.3 * 0.5) * 7
+                    });
+                }
+
+                // Pattern 3: All users, friends, 1st position
+                const pattern3Days = Math.min(Math.floor(targetImpressions / (yesterdayDAU * 1.0 * 0.33)), 30);
+                if (pattern3Days >= 7) {
+                    suggestions.push({
+                        duration: `${pattern3Days} days`,
+                        target: 'All users',
+                        placement: 'Friends page',
+                        position: '1st card',
+                        impressions: Math.floor(yesterdayDAU * pattern3Days * 1.0 * 0.33),
+                        cost: Math.floor(yesterdayDAU * pattern3Days * 1.0 * 0.33) * 7
+                    });
+                }
+
+                suggestions.sort((a, b) => Math.abs(a.cost - budget) - Math.abs(b.cost - budget));
+
+                let resultHTML = `
+                    <div class="cost-result">
+                        <div class="result-header">
+                            <h3>💡 Recommended Options</h3>
+                            <p>Based on your budget of <strong>¥${budget.toLocaleString()}</strong></p>
+                        </div>
+                `;
+
+                suggestions.forEach((suggestion, index) => {
+                    const isRecommended = index === 0;
+                    resultHTML += `
+                        <div class="suggestion-card ${isRecommended ? 'recommended' : ''}">
+                            ${isRecommended ? '<div class="recommended-badge">⭐ Most Recommended</div>' : ''}
+                            <div class="suggestion-details">
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">Duration:</span>
+                                    <span class="suggestion-value">${suggestion.duration}</span>
+                                </div>
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">Target:</span>
+                                    <span class="suggestion-value">${suggestion.target}</span>
+                                </div>
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">Placement:</span>
+                                    <span class="suggestion-value">${suggestion.placement}</span>
+                                </div>
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">Position:</span>
+                                    <span class="suggestion-value">${suggestion.position}</span>
+                                </div>
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">Est. Impressions:</span>
+                                    <span class="suggestion-value">${suggestion.impressions.toLocaleString()}</span>
+                                </div>
+                                <div class="suggestion-row total">
+                                    <span class="suggestion-label">Estimated Cost:</span>
+                                    <span class="suggestion-value">¥${suggestion.cost.toLocaleString()}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                resultHTML += `
+                        <div class="info-box" style="margin-top: 20px;">
+                            <p><strong>Note:</strong> These are suggestions based on your budget. You can adjust the parameters above as needed.</p>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('budgetResult').innerHTML = resultHTML;
+                document.getElementById('budgetResult').classList.remove('hidden');
+            } catch (error) {
+                console.error('Error calculating from budget:', error);
+                alert('Error calculating from budget. Please try again.');
             }
         }
 

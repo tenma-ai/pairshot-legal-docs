@@ -273,17 +273,21 @@
         }
 
         .card-preview {
+            max-width: 400px;
+            margin: 20px auto;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.25);
             overflow: hidden;
-            margin-top: 20px;
+            position: relative;
+            aspect-ratio: 3 / 4;
             perspective: 1000px;
         }
 
         .card-inner {
             position: relative;
             width: 100%;
+            height: 100%;
             transition: transform 0.6s;
             transform-style: preserve-3d;
         }
@@ -294,46 +298,109 @@
 
         .card-front,
         .card-back {
-            position: relative;
+            position: absolute;
             width: 100%;
+            height: 100%;
             backface-visibility: hidden;
         }
 
         .card-back {
-            position: absolute;
-            top: 0;
-            left: 0;
             transform: rotateY(180deg);
         }
 
-        .card-image {
+        .card-photos {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card-photo {
+            flex: 1;
             width: 100%;
-            aspect-ratio: 3/4;
             object-fit: cover;
             background: #f0f0f0;
         }
 
-        .card-content {
-            padding: 20px;
+        .card-comments {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 70px 20px 20px;
+            gap: 10px;
         }
 
-        .card-comment {
+        .comment-section {
+            flex: 1;
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .female-comment {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .male-comment {
+            background: rgba(0, 191, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.08);
+            border: 1px solid rgba(0, 191, 255, 0.5);
+        }
+
+        .comment-text {
             font-size: 1.1em;
             line-height: 1.6;
             color: #333;
-            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .friends-caption {
+            position: absolute;
+            bottom: 60px;
+            left: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .caption-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin: 0;
         }
 
         .flip-button {
-            background: #f0f0f0;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
             border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 12px 20px;
+            border-radius: 25px;
             cursor: pointer;
-            margin-top: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            transition: all 0.3s;
         }
 
-        .link-button {
+        .flip-button:hover {
+            background: white;
+            transform: scale(1.05);
+        }
+
+        .card-link-button {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            right: 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 15px 0;
@@ -342,8 +409,7 @@
             font-size: 1.2em;
             font-weight: 700;
             cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .info-box {
@@ -560,10 +626,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>链接URL<span class="required">*</span></label>
-                        <input type="url" id="linkUrl" placeholder="https://" required>
+                        <label>链接URL（可选）</label>
+                        <input type="url" id="linkUrl" placeholder="https://">
                         <div class="info-box">
-                            <p>此链接将显示为"访问网站"按钮。用户点击后将跳转到您的网站。</p>
+                            <p>如果设置链接，将显示为"访问网站"按钮。用户可以点击访问您的网站。您可以留空。</p>
                         </div>
                     </div>
                 </div>
@@ -580,6 +646,20 @@
                 <div class="section">
                     <button type="button" class="btn-secondary" onclick="calculateCost()">💰 费用估算</button>
                     <div id="costResult" class="hidden"></div>
+                </div>
+
+                <!-- Budget Calculator -->
+                <div class="section">
+                    <h2 class="section-title">💡 从预算反推</h2>
+                    <div class="form-group">
+                        <label>您的预算（日元）</label>
+                        <input type="number" id="budgetInput" placeholder="例如：100000" min="1000" step="1000">
+                        <div class="info-box">
+                            <p>输入预算后，系统将为您推荐最佳的投放参数</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="calculateFromBudget()">🔄 从预算反推</button>
+                    <div id="budgetResult" class="hidden"></div>
                 </div>
 
                 <!-- Submit -->
@@ -706,22 +786,24 @@
 
                 previewHTML = `
                     <div class="card-preview">
+                        <button class="flip-button" onclick="document.getElementById('cardInner').classList.toggle('flipped')">↻ 翻转卡片</button>
                         <div class="card-inner" id="cardInner">
                             <div class="card-front">
-                                <img src="${photo1}" class="card-image" alt="Photo 1">
-                                <div class="card-content">
-                                    <p class="card-comment">${comment1 || '请输入评论1'}</p>
-                                    ${linkUrl ? `<button class="link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 访问网站</button>` : ''}
-                                    <button class="flip-button" onclick="document.getElementById('cardInner').classList.toggle('flipped')">↻ 翻转卡片</button>
+                                <div class="card-photos">
+                                    <img src="${photo1}" class="card-photo" alt="照片1">
+                                    <img src="${photo2}" class="card-photo" alt="照片2">
                                 </div>
                             </div>
                             <div class="card-back">
-                                <img src="${photo2}" class="card-image" alt="Photo 2">
-                                <div class="card-content">
-                                    <p class="card-comment">${comment2 || '请输入评论2'}</p>
-                                    ${linkUrl ? `<button class="link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 访问网站</button>` : ''}
-                                    <button class="flip-button" onclick="document.getElementById('cardInner').classList.toggle('flipped')">↻ 翻转卡片</button>
+                                <div class="card-comments">
+                                    <div class="comment-section female-comment">
+                                        <p class="comment-text">${comment1 || '请输入评论1'}</p>
+                                    </div>
+                                    <div class="comment-section male-comment">
+                                        <p class="comment-text">${comment2 || '请输入评论2'}</p>
+                                    </div>
                                 </div>
+                                ${linkUrl ? `<button class="card-link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 访问网站</button>` : ''}
                             </div>
                         </div>
                     </div>
@@ -731,11 +813,11 @@
 
                 previewHTML = `
                     <div class="card-preview">
-                        <img src="${photo1}" class="card-image" alt="Photo">
-                        <div class="card-content">
-                            <p class="card-comment">${caption || '请输入说明文字'}</p>
-                            ${linkUrl ? `<button class="link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 访问网站</button>` : ''}
+                        <img src="${photo1}" class="card-photo" alt="照片">
+                        <div class="friends-caption">
+                            <p class="caption-text">${caption || '请输入说明文字'}</p>
                         </div>
+                        ${linkUrl ? `<button class="card-link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 访问网站</button>` : ''}
                     </div>
                 `;
             }
@@ -829,6 +911,130 @@
             } catch (error) {
                 console.error('Error calculating cost:', error);
                 alert('计算费用时出错，请重试。');
+            }
+        }
+
+        async function calculateFromBudget() {
+            const budget = parseInt(document.getElementById('budgetInput').value);
+
+            if (!budget || budget < 1000) {
+                alert('请输入至少1,000日元的预算');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${supabaseUrl}/rest/v1/rpc/get_yesterday_dau`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                });
+
+                const data = await response.json();
+                const yesterdayDAU = data || 100;
+                const targetImpressions = Math.floor(budget / 7);
+
+                const suggestions = [];
+
+                // 方案1：全用户、主页、随机位置
+                const pattern1Days = Math.min(Math.floor(targetImpressions / (yesterdayDAU * 0.25)), 30);
+                if (pattern1Days >= 7) {
+                    suggestions.push({
+                        duration: `${pattern1Days}天`,
+                        target: '全用户',
+                        placement: '主页',
+                        position: '随机',
+                        impressions: Math.floor(yesterdayDAU * pattern1Days * 0.25),
+                        cost: Math.floor(yesterdayDAU * pattern1Days * 0.25) * 7
+                    });
+                }
+
+                // 方案2：年龄层指定、主页、第2张
+                const pattern2Days = Math.min(Math.floor(targetImpressions / (yesterdayDAU * 0.3 * 0.5)), 30);
+                if (pattern2Days >= 7) {
+                    suggestions.push({
+                        duration: `${pattern2Days}天`,
+                        target: '年龄层指定（约30%）',
+                        placement: '主页',
+                        position: '第2张',
+                        impressions: Math.floor(yesterdayDAU * pattern2Days * 0.3 * 0.5),
+                        cost: Math.floor(yesterdayDAU * pattern2Days * 0.3 * 0.5) * 7
+                    });
+                }
+
+                // 方案3：全用户、好友页面、第1张
+                const pattern3Days = Math.min(Math.floor(targetImpressions / (yesterdayDAU * 1.0 * 0.33)), 30);
+                if (pattern3Days >= 7) {
+                    suggestions.push({
+                        duration: `${pattern3Days}天`,
+                        target: '全用户',
+                        placement: '好友页面',
+                        position: '第1张',
+                        impressions: Math.floor(yesterdayDAU * pattern3Days * 1.0 * 0.33),
+                        cost: Math.floor(yesterdayDAU * pattern3Days * 1.0 * 0.33) * 7
+                    });
+                }
+
+                suggestions.sort((a, b) => Math.abs(a.cost - budget) - Math.abs(b.cost - budget));
+
+                let resultHTML = `
+                    <div class="cost-result">
+                        <div class="result-header">
+                            <h3>💡 推荐方案</h3>
+                            <p>基于您的预算 <strong>¥${budget.toLocaleString()}</strong></p>
+                        </div>
+                `;
+
+                suggestions.forEach((suggestion, index) => {
+                    const isRecommended = index === 0;
+                    resultHTML += `
+                        <div class="suggestion-card ${isRecommended ? 'recommended' : ''}">
+                            ${isRecommended ? '<div class="recommended-badge">⭐ 最推荐</div>' : ''}
+                            <div class="suggestion-details">
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">投放期间：</span>
+                                    <span class="suggestion-value">${suggestion.duration}</span>
+                                </div>
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">目标用户：</span>
+                                    <span class="suggestion-value">${suggestion.target}</span>
+                                </div>
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">投放位置：</span>
+                                    <span class="suggestion-value">${suggestion.placement}</span>
+                                </div>
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">页面位置：</span>
+                                    <span class="suggestion-value">${suggestion.position}</span>
+                                </div>
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">预计展示次数：</span>
+                                    <span class="suggestion-value">${suggestion.impressions.toLocaleString()}</span>
+                                </div>
+                                <div class="suggestion-row total">
+                                    <span class="suggestion-label">预计费用：</span>
+                                    <span class="suggestion-value">¥${suggestion.cost.toLocaleString()}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                resultHTML += `
+                        <div class="info-box" style="margin-top: 20px;">
+                            <p><strong>提示：</strong>这些是基于您的预算的建议方案。您可以根据需要在上方调整参数。</p>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('budgetResult').innerHTML = resultHTML;
+                document.getElementById('budgetResult').classList.remove('hidden');
+            } catch (error) {
+                console.error('Error calculating from budget:', error);
+                alert('从预算反推时出错，请重试。');
             }
         }
 
