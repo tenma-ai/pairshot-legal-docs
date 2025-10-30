@@ -273,14 +273,15 @@
         }
 
         .card-preview {
-            max-width: 400px;
+            max-width: 350px;
             margin: 20px auto;
             background: white;
             border-radius: 20px;
             box-shadow: 0 12px 25px rgba(0,0,0,0.25);
             overflow: hidden;
             position: relative;
-            aspect-ratio: 3 / 4;
+            aspect-ratio: 9 / 17;
+            perspective: 1000px;
         }
 
         .card-inner {
@@ -305,6 +306,7 @@
 
         .card-back {
             transform: rotateY(180deg);
+            position: relative;
         }
 
         /* Front: 2 photos stacked vertically */
@@ -317,6 +319,7 @@
         .card-photo {
             flex: 1;
             width: 100%;
+            aspect-ratio: 1 / 1;
             object-fit: cover;
             background: #f0f0f0;
         }
@@ -325,8 +328,8 @@
         .card-comments {
             display: flex;
             flex-direction: column;
-            height: 100%;
-            padding: 70px 20px 20px;
+            height: calc(100% - 60px);
+            padding: 70px 20px 10px;
             gap: 10px;
         }
 
@@ -360,7 +363,10 @@
         }
 
         .card-link-button {
-            margin: 10px 20px 20px;
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            right: 20px;
             padding: 12px 24px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -370,6 +376,7 @@
             font-weight: 600;
             cursor: pointer;
             text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .flip-button {
@@ -470,6 +477,20 @@
                         <label>Website</label>
                         <input type="url" id="companyWebsite" placeholder="https://">
                     </div>
+                </div>
+
+                <!-- Budget Setting -->
+                <div class="section">
+                    <h2 class="section-title">💡 Budget Setting (Optional)</h2>
+                    <div class="form-group">
+                        <label>Your Budget (¥)</label>
+                        <input type="number" id="budgetInput" placeholder="e.g. 100000" min="1000" step="1000">
+                        <div class="info-box">
+                            <p>Enter your budget to get optimal delivery parameter suggestions that will be automatically filled in the Campaign Settings below</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="calculateFromBudget()">🔄 Calculate from Budget</button>
+                    <div id="budgetResult" class="hidden"></div>
                 </div>
 
                 <!-- Campaign Settings -->
@@ -622,20 +643,6 @@
                     <div id="costResult" class="hidden"></div>
                 </div>
 
-                <!-- Budget Calculator -->
-                <div class="section">
-                    <h2 class="section-title">💡 Calculate from Budget</h2>
-                    <div class="form-group">
-                        <label>Your Budget (¥)</label>
-                        <input type="number" id="budgetInput" placeholder="e.g. 100000" min="1000" step="1000">
-                        <div class="info-box">
-                            <p>Enter your budget to get optimal delivery parameter suggestions</p>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-secondary" onclick="calculateFromBudget()">🔄 Calculate from Budget</button>
-                    <div id="budgetResult" class="hidden"></div>
-                </div>
-
                 <!-- Submit -->
                 <div class="section">
                     <div id="messageContainer"></div>
@@ -784,7 +791,7 @@
                                         <p class="comment-text">${comment2 || 'Please enter comment 2'}</p>
                                     </div>
                                 </div>
-                                ${linkUrl ? `<button class="card-link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 Visit Site</button>` : ''}
+                                <button class="card-link-button" ${linkUrl ? `onclick="window.open('${linkUrl}', '_blank')"` : `style="opacity: 0.6; cursor: default;" onclick="alert('Preview only. Enter actual link in the Link URL field.')"`}>🌐 Visit Site</button>
                             </div>
                         </div>
                     </div>
@@ -893,6 +900,62 @@
                 console.error('Error calculating cost:', error);
                 alert('Error calculating cost. Please try again.');
             }
+        }
+
+        // Apply budget suggestion to form
+        function applyBudgetSuggestion(suggestion) {
+            // 1. Set duration
+            const durationBtns = document.querySelectorAll('.duration-btn');
+            let durationSet = false;
+
+            durationBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.days === suggestion.durationDays.toString()) {
+                    btn.classList.add('active');
+                    durationSet = true;
+                }
+            });
+
+            // If no matching button, use custom
+            if (!durationSet) {
+                const customBtn = document.querySelector('.duration-btn[data-days="custom"]');
+                if (customBtn) {
+                    customBtn.classList.add('active');
+                    document.getElementById('customDateRange').style.display = 'grid';
+                    const today = new Date();
+                    const endDate = new Date(today);
+                    endDate.setDate(endDate.getDate() + suggestion.durationDays);
+                    document.getElementById('startDate').valueAsDate = today;
+                    document.getElementById('endDate').valueAsDate = endDate;
+                }
+            } else {
+                document.getElementById('customDateRange').style.display = 'none';
+            }
+
+            // 2. Set target type
+            const targetRadio = document.querySelector(`input[name="targetType"][value="${suggestion.targetType}"]`);
+            if (targetRadio) {
+                targetRadio.checked = true;
+            }
+
+            // 3. Set placement
+            const placementRadio = document.querySelector(`input[name="placement"][value="${suggestion.placementType}"]`);
+            if (placementRadio) {
+                placementRadio.checked = true;
+                const event = new Event('change');
+                placementRadio.dispatchEvent(event);
+            }
+
+            // 4. Set position
+            const positionSelector = document.getElementById('positionSelector');
+            if (positionSelector) {
+                positionSelector.value = suggestion.positionValue;
+            }
+
+            // Scroll to campaign settings
+            document.querySelector('.section h2.section-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            alert('✅ Settings applied!\nPlease check the Campaign Settings below.');
         }
 
         async function calculateFromBudget() {
