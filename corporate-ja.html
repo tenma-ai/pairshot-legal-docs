@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>法人向け広告掲載 - PairShot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #00BFFF 0%, #667eea 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3.5em;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .content {
+            padding: 60px 40px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            font-size: 2.2em;
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .feature-description {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 0 -40px -60px -40px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 20px 60px;
+            font-size: 1.3em;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 50px;
+            margin-top: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .contact-info {
+            margin-top: 40px;
+            font-size: 1.1em;
+        }
+
+        .highlight {
+            background: rgba(255,255,255,0.2);
+            padding: 3px 10px;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .hero-stats {
+                gap: 30px;
+            }
+
+            .stat-number {
+                font-size: 2.5em;
+            }
+
+            .content {
+                padding: 40px 20px;
+            }
+
+            .cta-section {
+                padding: 40px 20px;
+                margin: 0 -20px -40px -20px;
+            }
+
+            header {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 カップルに特化した<br>広告掲載が可能</h1>
+            <p class="subtitle">PairShotで、恋愛・カップル向けサービスを効果的にプロモーション</p>
+
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">70%+</span>
+                    <span class="stat-label">DAU/MAU比率</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">カップルユーザー</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">毎日</span>
+                    <span class="stat-label">アクティブな利用</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="section">
+                <h2>🌟 PairShot広告の強み</h2>
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="feature-icon">💑</div>
+                        <div class="feature-title">100%カップルユーザー</div>
+                        <div class="feature-description">
+                            全ユーザーがカップルとして登録。デート、旅行、ギフトなどカップル向けサービスに最適なターゲティング。
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-title">驚異のDAU/MAU 70%+</div>
+                        <div class="feature-description">
+                            月間アクティブユーザーの70%以上が毎日アプリを利用。高い継続率とエンゲージメントを誇ります。
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-title">柔軟なターゲティング</div>
+                        <div class="feature-description">
+                            年齢層指定、配信人数指定、全ユーザー配信など、目的に応じた柔軟な配信設定が可能。
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <div class="feature-title">自然な広告体験</div>
+                        <div class="feature-description">
+                            カードUIに完全統合された広告形式。ユーザー体験を損なわず、高いクリック率を実現。
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">💰</div>
+                        <div class="feature-title">明確な料金体系</div>
+                        <div class="feature-description">
+                            インプレッション単価7円の明確な料金設定。事前に正確な費用シミュレーションが可能。
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <div class="feature-title">迅速な掲載開始</div>
+                        <div class="feature-description">
+                            申請から2営業日以内に審査完了。スピーディーにキャンペーンを開始できます。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📢 こんなサービスに最適</h2>
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="feature-icon">🏨</div>
+                        <div class="feature-title">旅行・宿泊</div>
+                        <div class="feature-description">
+                            カップル向けホテル、旅館、ツアーパッケージ
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🍽️</div>
+                        <div class="feature-title">グルメ・レストラン</div>
+                        <div class="feature-description">
+                            記念日ディナー、カップルシート、特別コース
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🎁</div>
+                        <div class="feature-title">ギフト・アクセサリー</div>
+                        <div class="feature-description">
+                            ペアリング、ペアアクセサリー、記念日ギフト
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📸</div>
+                        <div class="feature-title">フォトスタジオ</div>
+                        <div class="feature-description">
+                            カップルフォト、記念撮影、ウェディングフォト
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🎪</div>
+                        <div class="feature-title">エンタメ・体験</div>
+                        <div class="feature-description">
+                            デートスポット、アクティビティ、イベント
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">💍</div>
+                        <div class="feature-title">ブライダル</div>
+                        <div class="feature-description">
+                            結婚式場、ウェディングプランナー、指輪
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 style="color: white;">広告掲載を始めませんか？</h2>
+            <p style="font-size: 1.2em; margin-top: 20px;">
+                カップルに特化した<span class="highlight">高エンゲージメント</span>な広告配信で、<br>
+                あなたのサービスを効果的にプロモーション
+            </p>
+            <a href="ad-application-ja.html" class="cta-button">
+                📝 広告申請はこちら
+            </a>
+            <div class="contact-info">
+                <p>お問い合わせ</p>
+                <p><strong>📧 pairshot@gmail.com</strong></p>
+                <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.9;">
+                    申請から2営業日以内にご返信いたします
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

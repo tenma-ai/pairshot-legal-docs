@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>広告申請フォーム - PairShot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #00BFFF 0%, #667eea 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e1e5e9;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .required {
+            color: #ff4444;
+            margin-left: 4px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option,
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .duration-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .duration-btn {
+            padding: 10px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .duration-btn:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .duration-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .custom-date-range {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .custom-date-range.active {
+            display: grid;
+        }
+
+        .position-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .position-btn {
+            padding: 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .position-btn:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .position-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .position-btn.random {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+        }
+
+        .position-btn.random:hover {
+            opacity: 0.9;
+        }
+
+        .position-btn.random.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .file-upload {
+            border: 2px dashed #e1e5e9;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .cost-calculator {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .cost-result {
+            font-size: 2em;
+            font-weight: 700;
+            color: #667eea;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .cost-formula {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 0.9em;
+            line-height: 2;
+        }
+
+        .card-preview {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            margin-top: 20px;
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: relative;
+            width: 100%;
+            backface-visibility: hidden;
+        }
+
+        .card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotateY(180deg);
+        }
+
+        .card-image {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-comment {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .flip-button {
+            background: #f0f0f0;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .link-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 0;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .info-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .duration-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .custom-date-range {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 広告申請フォーム</h1>
+            <p class="subtitle">カップルに特化した広告掲載のお申し込み</p>
+        </header>
+
+        <div class="content">
+            <form id="adApplicationForm">
+                <!-- Company Information -->
+                <div class="section">
+                    <h2 class="section-title">企業情報</h2>
+
+                    <div class="form-group">
+                        <label>企業名<span class="required">*</span></label>
+                        <input type="text" id="companyName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>メールアドレス<span class="required">*</span></label>
+                        <input type="email" id="companyEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>電話番号</label>
+                        <input type="tel" id="companyPhone">
+                    </div>
+
+                    <div class="form-group">
+                        <label>ウェブサイト</label>
+                        <input type="url" id="companyWebsite" placeholder="https://">
+                    </div>
+                </div>
+
+                <!-- Campaign Settings -->
+                <div class="section">
+                    <h2 class="section-title">キャンペーン設定</h2>
+
+                    <div class="form-group">
+                        <label>出稿期間<span class="required">*</span></label>
+                        <div class="duration-options">
+                            <button type="button" class="duration-btn" data-days="7">7日間</button>
+                            <button type="button" class="duration-btn" data-days="14">14日間</button>
+                            <button type="button" class="duration-btn" data-days="30">30日間</button>
+                            <button type="button" class="duration-btn" data-days="60">60日間</button>
+                            <button type="button" class="duration-btn" data-days="90">90日間</button>
+                            <button type="button" class="duration-btn" data-days="custom">カスタム</button>
+                        </div>
+                        <div class="custom-date-range" id="customDateRange">
+                            <div>
+                                <label>開始日</label>
+                                <input type="date" id="startDate">
+                            </div>
+                            <div>
+                                <label>終了日</label>
+                                <input type="date" id="endDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>出稿範囲<span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="targetType" value="all" checked>
+                                全ユーザー
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="targetType" value="age">
+                                年齢指定
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="targetType" value="count">
+                                人数指定
+                            </label>
+                        </div>
+                        <div id="ageRange" class="hidden" style="margin-top: 15px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div>
+                                    <label>最小年齢</label>
+                                    <input type="number" id="minAge" min="18" max="100">
+                                </div>
+                                <div>
+                                    <label>最大年齢</label>
+                                    <input type="number" id="maxAge" min="18" max="100">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="targetCount" class="hidden" style="margin-top: 15px;">
+                            <label>表示人数</label>
+                            <input type="number" id="userCount" min="100" step="100">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>出稿場所<span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="placement" value="home" checked>
+                                メインページ（ホーム）
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="placement" value="friends">
+                                フレンドページ
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>出稿ページ位置<span class="required">*</span></label>
+                        <div id="positionSelector">
+                            <button type="button" class="position-btn random" data-position="random">ランダム</button>
+                            <!-- Position buttons will be generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ad Content -->
+                <div class="section">
+                    <h2 class="section-title">広告コンテンツ</h2>
+
+                    <div class="form-group">
+                        <label>写真1<span class="required">*</span></label>
+                        <div class="file-upload" onclick="document.getElementById('photo1').click()">
+                            <input type="file" id="photo1" accept="image/*">
+                            <p>📷 クリックして画像をアップロード</p>
+                            <p style="font-size: 0.9em; color: #666; margin-top: 5px;">推奨: 縦長の画像（3:4比率）</p>
+                        </div>
+                        <img id="photo1Preview" class="preview-image hidden">
+                    </div>
+
+                    <div class="form-group">
+                        <label>写真2<span class="required">*</span></label>
+                        <div class="file-upload" onclick="document.getElementById('photo2').click()">
+                            <input type="file" id="photo2" accept="image/*">
+                            <p>📷 クリックして画像をアップロード</p>
+                            <p style="font-size: 0.9em; color: #666; margin-top: 5px;">推奨: 縦長の画像（3:4比率）</p>
+                        </div>
+                        <img id="photo2Preview" class="preview-image hidden">
+                    </div>
+
+                    <div id="homeContent">
+                        <div class="form-group">
+                            <label>コメント1<span class="required">*</span></label>
+                            <textarea id="comment1" placeholder="カードに表示されるコメント（表面）" maxlength="200"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>コメント2<span class="required">*</span></label>
+                            <textarea id="comment2" placeholder="カードに表示されるコメント（裏面）" maxlength="200"></textarea>
+                        </div>
+                    </div>
+
+                    <div id="friendsContent" class="hidden">
+                        <div class="form-group">
+                            <label>キャプション<span class="required">*</span></label>
+                            <textarea id="caption" placeholder="投稿に表示されるキャプション" maxlength="500"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>リンクURL<span class="required">*</span></label>
+                        <input type="url" id="linkUrl" placeholder="https://" required>
+                        <div class="info-box">
+                            <p>このリンクは「サイトへ」ボタンとして表示され、ユーザーがクリックすると指定したウェブサイトへ遷移します。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="section">
+                    <h2 class="section-title">プレビュー</h2>
+                    <div id="cardPreviewContainer">
+                        <p style="text-align: center; color: #666;">写真とコメントを入力すると、プレビューが表示されます</p>
+                    </div>
+                </div>
+
+                <!-- Cost Simulation -->
+                <div class="section">
+                    <button type="button" class="btn-secondary" onclick="calculateCost()">💰 料金シミュレーション</button>
+                    <div id="costResult" class="hidden"></div>
+                </div>
+
+                <!-- Submit -->
+                <div class="section">
+                    <div id="messageContainer"></div>
+                    <button type="submit" class="btn-primary" id="submitBtn">📤 申請を送信</button>
+                    <div class="info-box" style="margin-top: 20px;">
+                        <p><strong>📧 お問い合わせ:</strong> pairshot@gmail.com</p>
+                        <p style="margin-top: 5px;">申請後2営業日以内にご返信いたします</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const supabaseUrl = window.SUPABASE_CONFIG.url;
+        const supabaseKey = window.SUPABASE_CONFIG.anonKey;
+
+        // Generate position buttons
+        const positionSelector = document.getElementById('positionSelector');
+        const randomBtn = positionSelector.querySelector('.random');
+
+        // Add position buttons 2-100 (or 1-100 for friends page)
+        function updatePositionButtons(placement) {
+            const startPos = placement === 'friends' ? 1 : 2;
+            const existingBtns = positionSelector.querySelectorAll('.position-btn:not(.random)');
+            existingBtns.forEach(btn => btn.remove());
+
+            for (let i = startPos; i <= 100; i++) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'position-btn';
+                btn.dataset.position = i;
+                btn.textContent = `${i}位`;
+                positionSelector.appendChild(btn);
+            }
+        }
+
+        updatePositionButtons('home');
+
+        // Duration selection
+        document.querySelectorAll('.duration-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                if (this.dataset.days === 'custom') {
+                    document.getElementById('customDateRange').classList.add('active');
+                } else {
+                    document.getElementById('customDateRange').classList.remove('active');
+                }
+            });
+        });
+
+        // Position selection
+        positionSelector.addEventListener('click', function(e) {
+            if (e.target.classList.contains('position-btn')) {
+                positionSelector.querySelectorAll('.position-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+            }
+        });
+
+        // Target type selection
+        document.querySelectorAll('input[name="targetType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('ageRange').classList.add('hidden');
+                document.getElementById('targetCount').classList.add('hidden');
+
+                if (this.value === 'age') {
+                    document.getElementById('ageRange').classList.remove('hidden');
+                } else if (this.value === 'count') {
+                    document.getElementById('targetCount').classList.remove('hidden');
+                }
+            });
+        });
+
+        // Placement selection
+        document.querySelectorAll('input[name="placement"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'home') {
+                    document.getElementById('homeContent').classList.remove('hidden');
+                    document.getElementById('friendsContent').classList.add('hidden');
+                    updatePositionButtons('home');
+                } else {
+                    document.getElementById('homeContent').classList.add('hidden');
+                    document.getElementById('friendsContent').classList.remove('hidden');
+                    updatePositionButtons('friends');
+                }
+            });
+        });
+
+        // Photo upload preview
+        ['photo1', 'photo2'].forEach(photoId => {
+            document.getElementById(photoId).addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.getElementById(photoId + 'Preview');
+                        preview.src = e.target.result;
+                        preview.classList.remove('hidden');
+                        updatePreview();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        // Update preview when content changes
+        ['comment1', 'comment2', 'caption'].forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener('input', updatePreview);
+            }
+        });
+
+        function updatePreview() {
+            const placement = document.querySelector('input[name="placement"]:checked').value;
+            const photo1 = document.getElementById('photo1Preview').src;
+            const photo2 = document.getElementById('photo2Preview').src;
+            const linkUrl = document.getElementById('linkUrl').value;
+
+            if (!photo1 || !photo2) return;
+
+            let previewHTML = '';
+
+            if (placement === 'home') {
+                const comment1 = document.getElementById('comment1').value;
+                const comment2 = document.getElementById('comment2').value;
+
+                previewHTML = `
+                    <div class="card-preview">
+                        <div class="card-inner" id="cardInner">
+                            <div class="card-front">
+                                <img src="${photo1}" class="card-image" alt="Photo 1">
+                                <div class="card-content">
+                                    <p class="card-comment">${comment1 || 'コメント1を入力してください'}</p>
+                                    ${linkUrl ? `<button class="link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 サイトへ</button>` : ''}
+                                    <button class="flip-button" onclick="document.getElementById('cardInner').classList.toggle('flipped')">↻ カードを裏返す</button>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <img src="${photo2}" class="card-image" alt="Photo 2">
+                                <div class="card-content">
+                                    <p class="card-comment">${comment2 || 'コメント2を入力してください'}</p>
+                                    ${linkUrl ? `<button class="link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 サイトへ</button>` : ''}
+                                    <button class="flip-button" onclick="document.getElementById('cardInner').classList.toggle('flipped')">↻ カードを裏返す</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const caption = document.getElementById('caption').value;
+
+                previewHTML = `
+                    <div class="card-preview">
+                        <img src="${photo1}" class="card-image" alt="Photo">
+                        <div class="card-content">
+                            <p class="card-comment">${caption || 'キャプションを入力してください'}</p>
+                            ${linkUrl ? `<button class="link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 サイトへ</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('cardPreviewContainer').innerHTML = previewHTML;
+        }
+
+        async function calculateCost() {
+            // Get yesterday's DAU from database
+            try {
+                const response = await fetch(`${supabaseUrl}/rest/v1/rpc/get_yesterday_dau`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                let yesterdayDAU = 1500; // Default fallback
+                if (response.ok) {
+                    const data = await response.json();
+                    yesterdayDAU = data || 1500;
+                }
+
+            // Get duration
+            const activeDurationBtn = document.querySelector('.duration-btn.active');
+            let durationDays = 0;
+
+            if (activeDurationBtn) {
+                if (activeDurationBtn.dataset.days === 'custom') {
+                    const startDate = new Date(document.getElementById('startDate').value);
+                    const endDate = new Date(document.getElementById('endDate').value);
+                    durationDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+                } else {
+                    durationDays = parseInt(activeDurationBtn.dataset.days);
+                }
+            }
+
+            // Get target percentage
+            const targetType = document.querySelector('input[name="targetType"]:checked').value;
+            let targetPercentage = 1.0;
+
+            if (targetType === 'age') {
+                targetPercentage = 0.3; // Estimated 30% for age targeting
+            } else if (targetType === 'count') {
+                const count = parseInt(document.getElementById('userCount').value) || 0;
+                targetPercentage = count / (yesterdayDAU * 2); // Assuming 2 users per couple
+            }
+
+            // Get position multiplier
+            const activePosition = document.querySelector('.position-btn.active');
+            let positionMultiplier = 0;
+
+            if (activePosition) {
+                if (activePosition.dataset.position === 'random') {
+                    positionMultiplier = 0.25;
+                } else {
+                    positionMultiplier = 1 / parseInt(activePosition.dataset.position);
+                }
+            }
+
+            // Get placement multiplier
+            const placement = document.querySelector('input[name="placement"]:checked').value;
+            const placementMultiplier = placement === 'friends' ? 0.33 : 1.0;
+
+            // Calculate cost
+            const estimatedImpressions = Math.round(yesterdayDAU * durationDays * targetPercentage * positionMultiplier * placementMultiplier);
+            const totalCost = estimatedImpressions * 7;
+
+            // Display result
+            const resultHTML = `
+                <div class="cost-calculator">
+                    <h3 style="text-align: center; margin-bottom: 20px;">料金シミュレーション結果</h3>
+                    <div class="cost-result">¥${totalCost.toLocaleString()}</div>
+                    <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                        推定表示回数: ${estimatedImpressions.toLocaleString()}回
+                    </p>
+                    <div class="cost-formula">
+                        <strong>計算式:</strong><br>
+                        昨日のDAU × 出稿期間 × 出稿範囲 × 1/出稿ページ × ${placement === 'friends' ? 'フレンドページ係数 × ' : ''}¥7<br><br>
+                        = ${yesterdayDAU} × ${durationDays}日 × ${(targetPercentage * 100).toFixed(1)}% × ${positionMultiplier.toFixed(3)} ${placement === 'friends' ? '× 0.33' : ''} × ¥7<br>
+                        = ${estimatedImpressions.toLocaleString()}回 × ¥7<br>
+                        = <strong>¥${totalCost.toLocaleString()}</strong>
+                    </div>
+                </div>
+            `;
+
+                document.getElementById('costResult').innerHTML = resultHTML;
+                document.getElementById('costResult').classList.remove('hidden');
+            } catch (error) {
+                console.error('Error calculating cost:', error);
+                alert('料金計算中にエラーが発生しました。もう一度お試しください。');
+            }
+        }
+
+        // Form submission
+        document.getElementById('adApplicationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const messageContainer = document.getElementById('messageContainer');
+
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ 送信中...';
+
+            try {
+                // Get form data
+                const activeDurationBtn = document.querySelector('.duration-btn.active');
+                let durationDays = 0;
+                let startDate = null;
+                let endDate = null;
+
+                if (activeDurationBtn) {
+                    if (activeDurationBtn.dataset.days === 'custom') {
+                        startDate = document.getElementById('startDate').value;
+                        endDate = document.getElementById('endDate').value;
+                        durationDays = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
+                    } else {
+                        durationDays = parseInt(activeDurationBtn.dataset.days);
+                    }
+                }
+
+                const targetType = document.querySelector('input[name="targetType"]:checked').value;
+                const placement = document.querySelector('input[name="placement"]:checked').value;
+                const activePosition = document.querySelector('.position-btn.active');
+                const pagePosition = activePosition ? activePosition.dataset.position : null;
+
+                // Upload photos to storage
+                const photo1File = document.getElementById('photo1').files[0];
+                const photo2File = document.getElementById('photo2').files[0];
+
+                if (!photo1File || !photo2File) {
+                    throw new Error('両方の写真をアップロードしてください');
+                }
+
+                // Upload photo 1
+                const photo1Ext = photo1File.name.split('.').pop();
+                const photo1Path = `ad-applications/${Date.now()}_1.${photo1Ext}`;
+                const photo1Upload = await fetch(`${supabaseUrl}/storage/v1/object/card-photos/${photo1Path}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${supabaseKey}`
+                    },
+                    body: photo1File
+                });
+
+                if (!photo1Upload.ok) throw new Error('写真1のアップロードに失敗しました');
+                const photo1Url = `${supabaseUrl}/storage/v1/object/public/card-photos/${photo1Path}`;
+
+                // Upload photo 2
+                const photo2Ext = photo2File.name.split('.').pop();
+                const photo2Path = `ad-applications/${Date.now()}_2.${photo2Ext}`;
+                const photo2Upload = await fetch(`${supabaseUrl}/storage/v1/object/card-photos/${photo2Path}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${supabaseKey}`
+                    },
+                    body: photo2File
+                });
+
+                if (!photo2Upload.ok) throw new Error('写真2のアップロードに失敗しました');
+                const photo2Url = `${supabaseUrl}/storage/v1/object/public/card-photos/${photo2Path}`;
+
+                // Calculate estimated cost
+                const yesterdayDAU = 1500; // Default
+                let targetPercentage = 1.0;
+                if (targetType === 'age') {
+                    targetPercentage = 0.3;
+                } else if (targetType === 'count') {
+                    const count = parseInt(document.getElementById('userCount').value) || 0;
+                    targetPercentage = count / (yesterdayDAU * 2);
+                }
+
+                const positionMultiplier = pagePosition === 'random' ? 0.25 : (1 / parseInt(pagePosition));
+                const placementMultiplier = placement === 'friends' ? 0.33 : 1.0;
+                const estimatedImpressions = Math.round(yesterdayDAU * durationDays * targetPercentage * positionMultiplier * placementMultiplier);
+                const estimatedCost = estimatedImpressions * 7;
+
+                // Prepare application data
+                const applicationData = {
+                    company_name: document.getElementById('companyName').value,
+                    company_email: document.getElementById('companyEmail').value,
+                    company_phone: document.getElementById('companyPhone').value || null,
+                    company_website: document.getElementById('companyWebsite').value || null,
+                    duration_days: durationDays,
+                    start_date: startDate,
+                    end_date: endDate,
+                    target_type: targetType,
+                    target_age_min: targetType === 'age' ? parseInt(document.getElementById('minAge').value) : null,
+                    target_age_max: targetType === 'age' ? parseInt(document.getElementById('maxAge').value) : null,
+                    target_count: targetType === 'count' ? parseInt(document.getElementById('userCount').value) : null,
+                    target_percentage: targetPercentage,
+                    placement: placement,
+                    page_position: pagePosition,
+                    photo1_url: photo1Url,
+                    photo2_url: photo2Url,
+                    comment1: placement === 'home' ? document.getElementById('comment1').value : null,
+                    comment2: placement === 'home' ? document.getElementById('comment2').value : null,
+                    caption: placement === 'friends' ? document.getElementById('caption').value : null,
+                    link_url: document.getElementById('linkUrl').value,
+                    estimated_dau: yesterdayDAU,
+                    estimated_impressions: estimatedImpressions,
+                    estimated_cost: estimatedCost,
+                    status: 'pending'
+                };
+
+                // Submit to database
+                const response = await fetch(`${supabaseUrl}/rest/v1/ad_applications`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify(applicationData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('申請の送信に失敗しました');
+                }
+
+                // Show success message
+                messageContainer.innerHTML = `
+                    <div class="success-message">
+                        <h3>✓ 申請を受け付けました！</h3>
+                        <p>お申し込みありがとうございます。審査の上、2営業日以内にご返信いたします。</p>
+                        <p style="margin-top: 10px;">確認メールを ${applicationData.company_email} に送信いたします</p>
+                    </div>
+                `;
+
+                // Reset form
+                document.getElementById('adApplicationForm').reset();
+                document.getElementById('photo1Preview').classList.add('hidden');
+                document.getElementById('photo2Preview').classList.add('hidden');
+                document.getElementById('cardPreviewContainer').innerHTML = '<p style="text-align: center; color: #666;">写真とコメントを入力すると、プレビューが表示されます</p>';
+                document.getElementById('costResult').classList.add('hidden');
+                document.querySelectorAll('.duration-btn, .position-btn').forEach(btn => btn.classList.remove('active'));
+
+            } catch (error) {
+                console.error('Submission error:', error);
+                messageContainer.innerHTML = `
+                    <div class="error-message">
+                        <h3>✗ 送信に失敗しました</h3>
+                        <p>${error.message}</p>
+                        <p style="margin-top: 10px;">もう一度お試しいただくか、pairshot@gmail.com までお問い合わせください。</p>
+                    </div>
+                `;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📤 申請を送信';
+            }
+        });
+    </script>
+</body>
+</html>

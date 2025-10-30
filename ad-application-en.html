@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Application Form - PairShot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #00BFFF 0%, #667eea 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e1e5e9;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .required {
+            color: #ff4444;
+            margin-left: 4px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option,
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .duration-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .duration-btn {
+            padding: 10px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .duration-btn:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .duration-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .custom-date-range {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .custom-date-range.active {
+            display: grid;
+        }
+
+        .position-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .position-btn {
+            padding: 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .position-btn:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .position-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .position-btn.random {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+        }
+
+        .position-btn.random:hover {
+            opacity: 0.9;
+        }
+
+        .position-btn.random.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .file-upload {
+            border: 2px dashed #e1e5e9;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .cost-calculator {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .cost-result {
+            font-size: 2em;
+            font-weight: 700;
+            color: #667eea;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .cost-formula {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 0.9em;
+            line-height: 2;
+        }
+
+        .card-preview {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            margin-top: 20px;
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: relative;
+            width: 100%;
+            backface-visibility: hidden;
+        }
+
+        .card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotateY(180deg);
+        }
+
+        .card-image {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-comment {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .flip-button {
+            background: #f0f0f0;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .link-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 0;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .info-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .duration-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .custom-date-range {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 Ad Application Form</h1>
+            <p class="subtitle">Apply for Couple-Focused Advertising on PairShot</p>
+        </header>
+
+        <div class="content">
+            <form id="adApplicationForm">
+                <!-- Company Information -->
+                <div class="section">
+                    <h2 class="section-title">Company Information</h2>
+
+                    <div class="form-group">
+                        <label>Company Name<span class="required">*</span></label>
+                        <input type="text" id="companyName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Address<span class="required">*</span></label>
+                        <input type="email" id="companyEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="companyPhone">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Website</label>
+                        <input type="url" id="companyWebsite" placeholder="https://">
+                    </div>
+                </div>
+
+                <!-- Campaign Settings -->
+                <div class="section">
+                    <h2 class="section-title">Campaign Settings</h2>
+
+                    <div class="form-group">
+                        <label>Campaign Duration<span class="required">*</span></label>
+                        <div class="duration-options">
+                            <button type="button" class="duration-btn" data-days="7">7 Days</button>
+                            <button type="button" class="duration-btn" data-days="14">14 Days</button>
+                            <button type="button" class="duration-btn" data-days="30">30 Days</button>
+                            <button type="button" class="duration-btn" data-days="60">60 Days</button>
+                            <button type="button" class="duration-btn" data-days="90">90 Days</button>
+                            <button type="button" class="duration-btn" data-days="custom">Custom</button>
+                        </div>
+                        <div class="custom-date-range" id="customDateRange">
+                            <div>
+                                <label>Start Date</label>
+                                <input type="date" id="startDate">
+                            </div>
+                            <div>
+                                <label>End Date</label>
+                                <input type="date" id="endDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Target Audience<span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="targetType" value="all" checked>
+                                All Users
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="targetType" value="age">
+                                By Age
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="targetType" value="count">
+                                By Count
+                            </label>
+                        </div>
+                        <div id="ageRange" class="hidden" style="margin-top: 15px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div>
+                                    <label>Min Age</label>
+                                    <input type="number" id="minAge" min="18" max="100">
+                                </div>
+                                <div>
+                                    <label>Max Age</label>
+                                    <input type="number" id="maxAge" min="18" max="100">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="targetCount" class="hidden" style="margin-top: 15px;">
+                            <label>Number of Users</label>
+                            <input type="number" id="userCount" min="100" step="100">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Placement<span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="placement" value="home" checked>
+                                Home Page
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="placement" value="friends">
+                                Friends Page
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Page Position<span class="required">*</span></label>
+                        <div id="positionSelector">
+                            <button type="button" class="position-btn random" data-position="random">Random</button>
+                            <!-- Position buttons will be generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ad Content -->
+                <div class="section">
+                    <h2 class="section-title">Ad Content</h2>
+
+                    <div class="form-group">
+                        <label>Photo 1<span class="required">*</span></label>
+                        <div class="file-upload" onclick="document.getElementById('photo1').click()">
+                            <input type="file" id="photo1" accept="image/*">
+                            <p>📷 Click to upload image</p>
+                            <p style="font-size: 0.9em; color: #666; margin-top: 5px;">Recommended: Portrait orientation (3:4 ratio)</p>
+                        </div>
+                        <img id="photo1Preview" class="preview-image hidden">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Photo 2<span class="required">*</span></label>
+                        <div class="file-upload" onclick="document.getElementById('photo2').click()">
+                            <input type="file" id="photo2" accept="image/*">
+                            <p>📷 Click to upload image</p>
+                            <p style="font-size: 0.9em; color: #666; margin-top: 5px;">Recommended: Portrait orientation (3:4 ratio)</p>
+                        </div>
+                        <img id="photo2Preview" class="preview-image hidden">
+                    </div>
+
+                    <div id="homeContent">
+                        <div class="form-group">
+                            <label>Comment 1<span class="required">*</span></label>
+                            <textarea id="comment1" placeholder="Comment displayed on card (front)" maxlength="200"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Comment 2<span class="required">*</span></label>
+                            <textarea id="comment2" placeholder="Comment displayed on card (back)" maxlength="200"></textarea>
+                        </div>
+                    </div>
+
+                    <div id="friendsContent" class="hidden">
+                        <div class="form-group">
+                            <label>Caption<span class="required">*</span></label>
+                            <textarea id="caption" placeholder="Caption displayed with post" maxlength="500"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Link URL<span class="required">*</span></label>
+                        <input type="url" id="linkUrl" placeholder="https://" required>
+                        <div class="info-box">
+                            <p>This link will be displayed as a "Visit Site" button. Users will be redirected to your website when they click it.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="section">
+                    <h2 class="section-title">Preview</h2>
+                    <div id="cardPreviewContainer">
+                        <p style="text-align: center; color: #666;">Preview will appear after you upload photos and enter comments</p>
+                    </div>
+                </div>
+
+                <!-- Cost Simulation -->
+                <div class="section">
+                    <button type="button" class="btn-secondary" onclick="calculateCost()">💰 Cost Simulation</button>
+                    <div id="costResult" class="hidden"></div>
+                </div>
+
+                <!-- Submit -->
+                <div class="section">
+                    <div id="messageContainer"></div>
+                    <button type="submit" class="btn-primary" id="submitBtn">📤 Submit Application</button>
+                    <div class="info-box" style="margin-top: 20px;">
+                        <p><strong>📧 Contact:</strong> pairshot@gmail.com</p>
+                        <p style="margin-top: 5px;">We will respond within 2 business days after submission</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const supabaseUrl = window.SUPABASE_CONFIG.url;
+        const supabaseKey = window.SUPABASE_CONFIG.anonKey;
+
+        // Generate position buttons
+        const positionSelector = document.getElementById('positionSelector');
+        const randomBtn = positionSelector.querySelector('.random');
+
+        // Add position buttons 2-100 (or 1-100 for friends page)
+        function updatePositionButtons(placement) {
+            const startPos = placement === 'friends' ? 1 : 2;
+            const existingBtns = positionSelector.querySelectorAll('.position-btn:not(.random)');
+            existingBtns.forEach(btn => btn.remove());
+
+            for (let i = startPos; i <= 100; i++) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'position-btn';
+                btn.dataset.position = i;
+                btn.textContent = `#${i}`;
+                positionSelector.appendChild(btn);
+            }
+        }
+
+        updatePositionButtons('home');
+
+        // Duration selection
+        document.querySelectorAll('.duration-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                if (this.dataset.days === 'custom') {
+                    document.getElementById('customDateRange').classList.add('active');
+                } else {
+                    document.getElementById('customDateRange').classList.remove('active');
+                }
+            });
+        });
+
+        // Position selection
+        positionSelector.addEventListener('click', function(e) {
+            if (e.target.classList.contains('position-btn')) {
+                positionSelector.querySelectorAll('.position-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+            }
+        });
+
+        // Target type selection
+        document.querySelectorAll('input[name="targetType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('ageRange').classList.add('hidden');
+                document.getElementById('targetCount').classList.add('hidden');
+
+                if (this.value === 'age') {
+                    document.getElementById('ageRange').classList.remove('hidden');
+                } else if (this.value === 'count') {
+                    document.getElementById('targetCount').classList.remove('hidden');
+                }
+            });
+        });
+
+        // Placement selection
+        document.querySelectorAll('input[name="placement"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'home') {
+                    document.getElementById('homeContent').classList.remove('hidden');
+                    document.getElementById('friendsContent').classList.add('hidden');
+                    updatePositionButtons('home');
+                } else {
+                    document.getElementById('homeContent').classList.add('hidden');
+                    document.getElementById('friendsContent').classList.remove('hidden');
+                    updatePositionButtons('friends');
+                }
+            });
+        });
+
+        // Photo upload preview
+        ['photo1', 'photo2'].forEach(photoId => {
+            document.getElementById(photoId).addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.getElementById(photoId + 'Preview');
+                        preview.src = e.target.result;
+                        preview.classList.remove('hidden');
+                        updatePreview();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        // Update preview when content changes
+        ['comment1', 'comment2', 'caption'].forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener('input', updatePreview);
+            }
+        });
+
+        function updatePreview() {
+            const placement = document.querySelector('input[name="placement"]:checked').value;
+            const photo1 = document.getElementById('photo1Preview').src;
+            const photo2 = document.getElementById('photo2Preview').src;
+            const linkUrl = document.getElementById('linkUrl').value;
+
+            if (!photo1 || !photo2) return;
+
+            let previewHTML = '';
+
+            if (placement === 'home') {
+                const comment1 = document.getElementById('comment1').value;
+                const comment2 = document.getElementById('comment2').value;
+
+                previewHTML = `
+                    <div class="card-preview">
+                        <div class="card-inner" id="cardInner">
+                            <div class="card-front">
+                                <img src="${photo1}" class="card-image" alt="Photo 1">
+                                <div class="card-content">
+                                    <p class="card-comment">${comment1 || 'Please enter comment 1'}</p>
+                                    ${linkUrl ? `<button class="link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 Visit Site</button>` : ''}
+                                    <button class="flip-button" onclick="document.getElementById('cardInner').classList.toggle('flipped')">↻ Flip Card</button>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <img src="${photo2}" class="card-image" alt="Photo 2">
+                                <div class="card-content">
+                                    <p class="card-comment">${comment2 || 'Please enter comment 2'}</p>
+                                    ${linkUrl ? `<button class="link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 Visit Site</button>` : ''}
+                                    <button class="flip-button" onclick="document.getElementById('cardInner').classList.toggle('flipped')">↻ Flip Card</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const caption = document.getElementById('caption').value;
+
+                previewHTML = `
+                    <div class="card-preview">
+                        <img src="${photo1}" class="card-image" alt="Photo">
+                        <div class="card-content">
+                            <p class="card-comment">${caption || 'Please enter caption'}</p>
+                            ${linkUrl ? `<button class="link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 Visit Site</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('cardPreviewContainer').innerHTML = previewHTML;
+        }
+
+        async function calculateCost() {
+            // Get yesterday's DAU from database
+            try {
+                const response = await fetch(`${supabaseUrl}/rest/v1/rpc/get_yesterday_dau`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                let yesterdayDAU = 1500; // Default fallback
+                if (response.ok) {
+                    const data = await response.json();
+                    yesterdayDAU = data || 1500;
+                }
+
+                // Get duration
+                const activeDurationBtn = document.querySelector('.duration-btn.active');
+                let durationDays = 0;
+
+                if (activeDurationBtn) {
+                    if (activeDurationBtn.dataset.days === 'custom') {
+                        const startDate = new Date(document.getElementById('startDate').value);
+                        const endDate = new Date(document.getElementById('endDate').value);
+                        durationDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+                    } else {
+                        durationDays = parseInt(activeDurationBtn.dataset.days);
+                    }
+                }
+
+                // Get target percentage
+                const targetType = document.querySelector('input[name="targetType"]:checked').value;
+                let targetPercentage = 1.0;
+
+                if (targetType === 'age') {
+                    targetPercentage = 0.3; // Estimated 30% for age targeting
+                } else if (targetType === 'count') {
+                    const count = parseInt(document.getElementById('userCount').value) || 0;
+                    targetPercentage = count / (yesterdayDAU * 2); // Assuming 2 users per couple
+                }
+
+                // Get position multiplier
+                const activePosition = document.querySelector('.position-btn.active');
+                let positionMultiplier = 0;
+
+                if (activePosition) {
+                    if (activePosition.dataset.position === 'random') {
+                        positionMultiplier = 0.25;
+                    } else {
+                        positionMultiplier = 1 / parseInt(activePosition.dataset.position);
+                    }
+                }
+
+                // Get placement multiplier
+                const placement = document.querySelector('input[name="placement"]:checked').value;
+                const placementMultiplier = placement === 'friends' ? 0.33 : 1.0;
+
+                // Calculate cost
+                const estimatedImpressions = Math.round(yesterdayDAU * durationDays * targetPercentage * positionMultiplier * placementMultiplier);
+                const totalCost = estimatedImpressions * 7;
+
+                // Display result
+                const resultHTML = `
+                    <div class="cost-calculator">
+                        <h3 style="text-align: center; margin-bottom: 20px;">Cost Simulation Result</h3>
+                        <div class="cost-result">¥${totalCost.toLocaleString()}</div>
+                        <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                            Estimated Impressions: ${estimatedImpressions.toLocaleString()} times
+                        </p>
+                        <div class="cost-formula">
+                            <strong>Formula:</strong><br>
+                            Yesterday's DAU × Duration × Target % × 1/Position ${placement === 'friends' ? '× Friends Coefficient' : ''} × ¥7<br><br>
+                            = ${yesterdayDAU} × ${durationDays} days × ${(targetPercentage * 100).toFixed(1)}% × ${positionMultiplier.toFixed(3)} ${placement === 'friends' ? '× 0.33' : ''} × ¥7<br>
+                            = ${estimatedImpressions.toLocaleString()} impressions × ¥7<br>
+                            = <strong>¥${totalCost.toLocaleString()}</strong>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('costResult').innerHTML = resultHTML;
+                document.getElementById('costResult').classList.remove('hidden');
+            } catch (error) {
+                console.error('Error calculating cost:', error);
+                alert('Error calculating cost. Please try again.');
+            }
+        }
+
+        // Form submission
+        document.getElementById('adApplicationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const messageContainer = document.getElementById('messageContainer');
+
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Submitting...';
+
+            try {
+                // Get form data
+                const activeDurationBtn = document.querySelector('.duration-btn.active');
+                let durationDays = 0;
+                let startDate = null;
+                let endDate = null;
+
+                if (activeDurationBtn) {
+                    if (activeDurationBtn.dataset.days === 'custom') {
+                        startDate = document.getElementById('startDate').value;
+                        endDate = document.getElementById('endDate').value;
+                        durationDays = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
+                    } else {
+                        durationDays = parseInt(activeDurationBtn.dataset.days);
+                    }
+                }
+
+                const targetType = document.querySelector('input[name="targetType"]:checked').value;
+                const placement = document.querySelector('input[name="placement"]:checked').value;
+                const activePosition = document.querySelector('.position-btn.active');
+                const pagePosition = activePosition ? activePosition.dataset.position : null;
+
+                // Upload photos to storage
+                const photo1File = document.getElementById('photo1').files[0];
+                const photo2File = document.getElementById('photo2').files[0];
+
+                if (!photo1File || !photo2File) {
+                    throw new Error('Please upload both photos');
+                }
+
+                // Upload photo 1
+                const photo1Ext = photo1File.name.split('.').pop();
+                const photo1Path = `ad-applications/${Date.now()}_1.${photo1Ext}`;
+                const photo1Upload = await fetch(`${supabaseUrl}/storage/v1/object/card-photos/${photo1Path}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${supabaseKey}`
+                    },
+                    body: photo1File
+                });
+
+                if (!photo1Upload.ok) throw new Error('Failed to upload photo 1');
+                const photo1Url = `${supabaseUrl}/storage/v1/object/public/card-photos/${photo1Path}`;
+
+                // Upload photo 2
+                const photo2Ext = photo2File.name.split('.').pop();
+                const photo2Path = `ad-applications/${Date.now()}_2.${photo2Ext}`;
+                const photo2Upload = await fetch(`${supabaseUrl}/storage/v1/object/card-photos/${photo2Path}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${supabaseKey}`
+                    },
+                    body: photo2File
+                });
+
+                if (!photo2Upload.ok) throw new Error('Failed to upload photo 2');
+                const photo2Url = `${supabaseUrl}/storage/v1/object/public/card-photos/${photo2Path}`;
+
+                // Calculate estimated cost
+                const yesterdayDAU = 1500; // Default
+                let targetPercentage = 1.0;
+                if (targetType === 'age') {
+                    targetPercentage = 0.3;
+                } else if (targetType === 'count') {
+                    const count = parseInt(document.getElementById('userCount').value) || 0;
+                    targetPercentage = count / (yesterdayDAU * 2);
+                }
+
+                const positionMultiplier = pagePosition === 'random' ? 0.25 : (1 / parseInt(pagePosition));
+                const placementMultiplier = placement === 'friends' ? 0.33 : 1.0;
+                const estimatedImpressions = Math.round(yesterdayDAU * durationDays * targetPercentage * positionMultiplier * placementMultiplier);
+                const estimatedCost = estimatedImpressions * 7;
+
+                // Prepare application data
+                const applicationData = {
+                    company_name: document.getElementById('companyName').value,
+                    company_email: document.getElementById('companyEmail').value,
+                    company_phone: document.getElementById('companyPhone').value || null,
+                    company_website: document.getElementById('companyWebsite').value || null,
+                    duration_days: durationDays,
+                    start_date: startDate,
+                    end_date: endDate,
+                    target_type: targetType,
+                    target_age_min: targetType === 'age' ? parseInt(document.getElementById('minAge').value) : null,
+                    target_age_max: targetType === 'age' ? parseInt(document.getElementById('maxAge').value) : null,
+                    target_count: targetType === 'count' ? parseInt(document.getElementById('userCount').value) : null,
+                    target_percentage: targetPercentage,
+                    placement: placement,
+                    page_position: pagePosition,
+                    photo1_url: photo1Url,
+                    photo2_url: photo2Url,
+                    comment1: placement === 'home' ? document.getElementById('comment1').value : null,
+                    comment2: placement === 'home' ? document.getElementById('comment2').value : null,
+                    caption: placement === 'friends' ? document.getElementById('caption').value : null,
+                    link_url: document.getElementById('linkUrl').value,
+                    estimated_dau: yesterdayDAU,
+                    estimated_impressions: estimatedImpressions,
+                    estimated_cost: estimatedCost,
+                    status: 'pending'
+                };
+
+                // Submit to database
+                const response = await fetch(`${supabaseUrl}/rest/v1/ad_applications`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify(applicationData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to submit application');
+                }
+
+                // Show success message
+                messageContainer.innerHTML = `
+                    <div class="success-message">
+                        <h3>✓ Application Submitted Successfully!</h3>
+                        <p>Thank you for your application. We will review it and respond within 2 business days.</p>
+                        <p style="margin-top: 10px;">Confirmation email will be sent to: ${applicationData.company_email}</p>
+                    </div>
+                `;
+
+                // Reset form
+                document.getElementById('adApplicationForm').reset();
+                document.getElementById('photo1Preview').classList.add('hidden');
+                document.getElementById('photo2Preview').classList.add('hidden');
+                document.getElementById('cardPreviewContainer').innerHTML = '<p style="text-align: center; color: #666;">Preview will appear after you upload photos and enter comments</p>';
+                document.getElementById('costResult').classList.add('hidden');
+                document.querySelectorAll('.duration-btn, .position-btn').forEach(btn => btn.classList.remove('active'));
+
+            } catch (error) {
+                console.error('Submission error:', error);
+                messageContainer.innerHTML = `
+                    <div class="error-message">
+                        <h3>✗ Submission Failed</h3>
+                        <p>${error.message}</p>
+                        <p style="margin-top: 10px;">Please try again or contact pairshot@gmail.com for assistance.</p>
+                    </div>
+                `;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📤 Submit Application';
+            }
+        });
+    </script>
+</body>
+</html>
