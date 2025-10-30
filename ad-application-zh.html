@@ -806,7 +806,7 @@
                                         <p class="comment-text">${comment2 || '请输入评论2'}</p>
                                     </div>
                                 </div>
-                                <button class="card-link-button" ${linkUrl ? `onclick="window.open('${linkUrl}', '_blank')"` : `style="opacity: 0.6; cursor: default;" onclick="alert('预览用。请在链接URL栏输入实际链接。')"`}>🌐 访问网站</button>
+                                <button class="card-link-button" ${linkUrl ? `data-url="${linkUrl}" onclick="window.open(this.getAttribute('data-url'), '_blank')" style="cursor: pointer;"` : `style="opacity: 0.6; cursor: default;" onclick="alert('预览用。请在链接URL栏输入实际链接。')"`}>🌐 访问网站</button>
                             </div>
                         </div>
                     </div>
@@ -820,7 +820,7 @@
                         <div class="friends-caption">
                             <p class="caption-text">${caption || '请输入说明文字'}</p>
                         </div>
-                        ${linkUrl ? `<button class="card-link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 访问网站</button>` : ''}
+                        ${linkUrl ? `<button class="card-link-button" data-url="${linkUrl}" onclick="window.open(this.getAttribute('data-url'), '_blank')" style="cursor: pointer;">🌐 访问网站</button>` : ''}
                     </div>
                 `;
             }

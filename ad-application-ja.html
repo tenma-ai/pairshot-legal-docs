@@ -784,7 +784,7 @@
                                         <p class="comment-text">${comment2 || 'コメント2を入力してください'}</p>
                                     </div>
                                 </div>
-                                <button class="card-link-button" ${linkUrl ? `onclick="window.open('${linkUrl}', '_blank')"` : `style="opacity: 0.6; cursor: default;" onclick="alert('プレビュー用です。実際のリンクは「リンクURL」欄に入力してください。')"`}>🌐 サイトへ</button>
+                                <button class="card-link-button" ${linkUrl ? `data-url="${linkUrl}" onclick="window.open(this.getAttribute('data-url'), '_blank')" style="cursor: pointer;"` : `style="opacity: 0.6; cursor: default;" onclick="alert('プレビュー用です。実際のリンクは「リンクURL」欄に入力してください。')"`}>🌐 サイトへ</button>
                             </div>
                         </div>
                     </div>
@@ -797,7 +797,7 @@
                         <img src="${photo1}" class="card-photo" alt="写真" style="height: 60%; object-fit: cover;">
                         <div style="padding: 20px;">
                             <p class="comment-text">${caption || 'キャプションを入力してください'}</p>
-                            ${linkUrl ? `<button class="card-link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 サイトへ</button>` : ''}
+                            ${linkUrl ? `<button class="card-link-button" data-url="${linkUrl}" onclick="window.open(this.getAttribute('data-url'), '_blank')" style="cursor: pointer;">🌐 サイトへ</button>` : ''}
                         </div>
                     </div>
                 `;

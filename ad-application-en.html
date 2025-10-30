@@ -791,7 +791,7 @@
                                         <p class="comment-text">${comment2 || 'Please enter comment 2'}</p>
                                     </div>
                                 </div>
-                                <button class="card-link-button" ${linkUrl ? `onclick="window.open('${linkUrl}', '_blank')"` : `style="opacity: 0.6; cursor: default;" onclick="alert('Preview only. Enter actual link in the Link URL field.')"`}>🌐 Visit Site</button>
+                                <button class="card-link-button" ${linkUrl ? `data-url="${linkUrl}" onclick="window.open(this.getAttribute('data-url'), '_blank')" style="cursor: pointer;"` : `style="opacity: 0.6; cursor: default;" onclick="alert('Preview only. Enter actual link in the Link URL field.')"`}>🌐 Visit Site</button>
                             </div>
                         </div>
                     </div>
@@ -805,7 +805,7 @@
                         <div class="friends-caption">
                             <p class="caption-text">${caption || 'Please enter caption'}</p>
                         </div>
-                        ${linkUrl ? `<button class="card-link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 Visit Site</button>` : ''}
+                        ${linkUrl ? `<button class="card-link-button" data-url="${linkUrl}" onclick="window.open(this.getAttribute('data-url'), '_blank')" style="cursor: pointer;">🌐 Visit Site</button>` : ''}
                     </div>
                 `;
             }
