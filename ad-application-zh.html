@@ -273,14 +273,14 @@
         }
 
         .card-preview {
-            max-width: 400px;
+            max-width: 350px;
             margin: 20px auto;
             background: white;
             border-radius: 20px;
             box-shadow: 0 12px 25px rgba(0,0,0,0.25);
             overflow: hidden;
             position: relative;
-            aspect-ratio: 3 / 4;
+            aspect-ratio: 9 / 17;
             perspective: 1000px;
         }
 
@@ -306,6 +306,7 @@
 
         .card-back {
             transform: rotateY(180deg);
+            position: relative;
         }
 
         .card-photos {
@@ -317,6 +318,7 @@
         .card-photo {
             flex: 1;
             width: 100%;
+            aspect-ratio: 1 / 1;
             object-fit: cover;
             background: #f0f0f0;
         }
@@ -324,8 +326,8 @@
         .card-comments {
             display: flex;
             flex-direction: column;
-            height: 100%;
-            padding: 70px 20px 20px;
+            height: calc(100% - 60px);
+            padding: 70px 20px 10px;
             gap: 10px;
         }
 
@@ -401,15 +403,16 @@
             bottom: 15px;
             left: 20px;
             right: 20px;
+            padding: 12px 24px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px 0;
             border: none;
             border-radius: 50px;
-            font-size: 1.2em;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .info-box {
@@ -496,6 +499,20 @@
                         <label>公司网站</label>
                         <input type="url" id="companyWebsite" placeholder="https://">
                     </div>
+                </div>
+
+                <!-- Budget Setting -->
+                <div class="section">
+                    <h2 class="section-title">💡 预算设置（可选）</h2>
+                    <div class="form-group">
+                        <label>您的预算（日元）</label>
+                        <input type="number" id="budgetInput" placeholder="例如：100000" min="1000" step="1000">
+                        <div class="info-box">
+                            <p>输入预算后，系统将为您推荐最佳的投放参数，并自动填写到下方的广告设置中</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="calculateFromBudget()">🔄 从预算反推</button>
+                    <div id="budgetResult" class="hidden"></div>
                 </div>
 
                 <!-- Campaign Settings -->
@@ -648,20 +665,6 @@
                     <div id="costResult" class="hidden"></div>
                 </div>
 
-                <!-- Budget Calculator -->
-                <div class="section">
-                    <h2 class="section-title">💡 从预算反推</h2>
-                    <div class="form-group">
-                        <label>您的预算（日元）</label>
-                        <input type="number" id="budgetInput" placeholder="例如：100000" min="1000" step="1000">
-                        <div class="info-box">
-                            <p>输入预算后，系统将为您推荐最佳的投放参数</p>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-secondary" onclick="calculateFromBudget()">🔄 从预算反推</button>
-                    <div id="budgetResult" class="hidden"></div>
-                </div>
-
                 <!-- Submit -->
                 <div class="section">
                     <div id="messageContainer"></div>
@@ -803,7 +806,7 @@
                                         <p class="comment-text">${comment2 || '请输入评论2'}</p>
                                     </div>
                                 </div>
-                                ${linkUrl ? `<button class="card-link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 访问网站</button>` : ''}
+                                <button class="card-link-button" ${linkUrl ? `onclick="window.open('${linkUrl}', '_blank')"` : `style="opacity: 0.6; cursor: default;" onclick="alert('预览用。请在链接URL栏输入实际链接。')"`}>🌐 访问网站</button>
                             </div>
                         </div>
                     </div>
@@ -914,6 +917,56 @@
             }
         }
 
+        // Apply budget suggestion to form
+        function applyBudgetSuggestion(suggestion) {
+            const durationBtns = document.querySelectorAll('.duration-btn');
+            let durationSet = false;
+
+            durationBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.days === suggestion.durationDays.toString()) {
+                    btn.classList.add('active');
+                    durationSet = true;
+                }
+            });
+
+            if (!durationSet) {
+                const customBtn = document.querySelector('.duration-btn[data-days="custom"]');
+                if (customBtn) {
+                    customBtn.classList.add('active');
+                    document.getElementById('customDateRange').style.display = 'grid';
+                    const today = new Date();
+                    const endDate = new Date(today);
+                    endDate.setDate(endDate.getDate() + suggestion.durationDays);
+                    document.getElementById('startDate').valueAsDate = today;
+                    document.getElementById('endDate').valueAsDate = endDate;
+                }
+            } else {
+                document.getElementById('customDateRange').style.display = 'none';
+            }
+
+            const targetRadio = document.querySelector(`input[name="targetType"][value="${suggestion.targetType}"]`);
+            if (targetRadio) {
+                targetRadio.checked = true;
+            }
+
+            const placementRadio = document.querySelector(`input[name="placement"][value="${suggestion.placementType}"]`);
+            if (placementRadio) {
+                placementRadio.checked = true;
+                const event = new Event('change');
+                placementRadio.dispatchEvent(event);
+            }
+
+            const positionSelector = document.getElementById('positionSelector');
+            if (positionSelector) {
+                positionSelector.value = suggestion.positionValue;
+            }
+
+            document.querySelector('.section h2.section-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            alert('✅ 设置已应用！\n请检查下方的广告设置。');
+        }
+
         async function calculateFromBudget() {
             const budget = parseInt(document.getElementById('budgetInput').value);
 
@@ -944,9 +997,13 @@
                 if (pattern1Days >= 7) {
                     suggestions.push({
                         duration: `${pattern1Days}天`,
+                        durationDays: pattern1Days,
                         target: '全用户',
+                        targetType: 'all',
                         placement: '主页',
+                        placementType: 'home',
                         position: '随机',
+                        positionValue: 'random',
                         impressions: Math.floor(yesterdayDAU * pattern1Days * 0.25),
                         cost: Math.floor(yesterdayDAU * pattern1Days * 0.25) * 7
                     });
@@ -957,9 +1014,13 @@
                 if (pattern2Days >= 7) {
                     suggestions.push({
                         duration: `${pattern2Days}天`,
+                        durationDays: pattern2Days,
                         target: '年龄层指定（约30%）',
+                        targetType: 'age',
                         placement: '主页',
+                        placementType: 'home',
                         position: '第2张',
+                        positionValue: '2',
                         impressions: Math.floor(yesterdayDAU * pattern2Days * 0.3 * 0.5),
                         cost: Math.floor(yesterdayDAU * pattern2Days * 0.3 * 0.5) * 7
                     });
@@ -970,9 +1031,13 @@
                 if (pattern3Days >= 7) {
                     suggestions.push({
                         duration: `${pattern3Days}天`,
+                        durationDays: pattern3Days,
                         target: '全用户',
+                        targetType: 'all',
                         placement: '好友页面',
+                        placementType: 'friends',
                         position: '第1张',
+                        positionValue: '1',
                         impressions: Math.floor(yesterdayDAU * pattern3Days * 1.0 * 0.33),
                         cost: Math.floor(yesterdayDAU * pattern3Days * 1.0 * 0.33) * 7
                     });
@@ -1019,6 +1084,9 @@
                                     <span class="suggestion-value">¥${suggestion.cost.toLocaleString()}</span>
                                 </div>
                             </div>
+                            <button type="button" class="btn-primary" style="margin-top: 15px; width: 100%;" onclick='applyBudgetSuggestion(${JSON.stringify(suggestion)})'>
+                                ✅ 应用此设置
+                            </button>
                         </div>
                     `;
                 });
