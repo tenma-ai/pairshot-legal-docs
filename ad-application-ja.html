@@ -273,14 +273,15 @@
         }
 
         .card-preview {
-            max-width: 400px;
+            max-width: 350px;
             margin: 20px auto;
             background: white;
             border-radius: 20px;
             box-shadow: 0 12px 25px rgba(0,0,0,0.25);
             overflow: hidden;
             position: relative;
-            aspect-ratio: 3 / 4;
+            aspect-ratio: 9 / 17;
+            perspective: 1000px;
         }
 
         .card-inner {
@@ -305,6 +306,7 @@
 
         .card-back {
             transform: rotateY(180deg);
+            position: relative;
         }
 
         /* 表面: 2枚の写真を縦に配置 */
@@ -325,8 +327,8 @@
         .card-comments {
             display: flex;
             flex-direction: column;
-            height: 100%;
-            padding: 70px 20px 20px;
+            height: calc(100% - 60px);
+            padding: 70px 20px 10px;
             gap: 10px;
         }
 
@@ -360,7 +362,10 @@
         }
 
         .card-link-button {
-            margin: 10px 20px 20px;
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            right: 20px;
             padding: 12px 24px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -370,6 +375,7 @@
             font-weight: 600;
             cursor: pointer;
             text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .flip-button {
@@ -470,6 +476,20 @@
                         <label>ウェブサイト</label>
                         <input type="url" id="companyWebsite" placeholder="https://">
                     </div>
+                </div>
+
+                <!-- Budget Setting -->
+                <div class="section">
+                    <h2 class="section-title">💡 予算設定（任意）</h2>
+                    <div class="form-group">
+                        <label>ご予算（円）</label>
+                        <input type="number" id="budgetInput" placeholder="例: 100000" min="1000" step="1000">
+                        <div class="info-box">
+                            <p>予算を入力すると、最適な配信パラメータを提案し、下記のキャンペーン設定に自動入力します</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="calculateFromBudget()">🔄 予算から逆算</button>
+                    <div id="budgetResult" class="hidden"></div>
                 </div>
 
                 <!-- Campaign Settings -->
@@ -622,20 +642,6 @@
                     <div id="costResult" class="hidden"></div>
                 </div>
 
-                <!-- Budget Reverse Calculation -->
-                <div class="section">
-                    <h2 class="section-title">💡 予算から逆算</h2>
-                    <div class="form-group">
-                        <label>ご予算（円）</label>
-                        <input type="number" id="budgetInput" placeholder="例: 100000" min="1000" step="1000">
-                        <div class="info-box">
-                            <p>予算を入力すると、最適な配信パラメータを提案します</p>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-secondary" onclick="calculateFromBudget()">🔄 予算から逆算</button>
-                    <div id="budgetResult" class="hidden"></div>
-                </div>
-
                 <!-- Submit -->
                 <div class="section">
                     <div id="messageContainer"></div>
@@ -777,7 +783,7 @@
                                         <p class="comment-text">${comment2 || 'コメント2を入力してください'}</p>
                                     </div>
                                 </div>
-                                ${linkUrl ? `<button class="card-link-button" onclick="window.open('${linkUrl}', '_blank')">🌐 サイトへ</button>` : ''}
+                                <button class="card-link-button" ${linkUrl ? `onclick="window.open('${linkUrl}', '_blank')"` : `style="opacity: 0.6; cursor: default;" onclick="alert('プレビュー用です。実際のリンクは「リンクURL」欄に入力してください。')"`}>🌐 サイトへ</button>
                             </div>
                         </div>
                     </div>
@@ -888,6 +894,65 @@
             }
         }
 
+        // Apply budget suggestion to form
+        function applyBudgetSuggestion(suggestion) {
+            // 1. Set duration
+            const durationBtns = document.querySelectorAll('.duration-btn');
+            let durationSet = false;
+
+            durationBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.days === suggestion.durationDays.toString()) {
+                    btn.classList.add('active');
+                    durationSet = true;
+                }
+            });
+
+            // If no matching button, use custom
+            if (!durationSet) {
+                const customBtn = document.querySelector('.duration-btn[data-days="custom"]');
+                if (customBtn) {
+                    customBtn.classList.add('active');
+                    document.getElementById('customDateRange').style.display = 'grid';
+                    // Set dates (today + duration)
+                    const today = new Date();
+                    const endDate = new Date(today);
+                    endDate.setDate(endDate.getDate() + suggestion.durationDays);
+                    document.getElementById('startDate').valueAsDate = today;
+                    document.getElementById('endDate').valueAsDate = endDate;
+                }
+            } else {
+                document.getElementById('customDateRange').style.display = 'none';
+            }
+
+            // 2. Set target type
+            const targetRadio = document.querySelector(`input[name="targetType"][value="${suggestion.targetType}"]`);
+            if (targetRadio) {
+                targetRadio.checked = true;
+            }
+
+            // 3. Set placement
+            const placementRadio = document.querySelector(`input[name="placement"][value="${suggestion.placementType}"]`);
+            if (placementRadio) {
+                placementRadio.checked = true;
+                // Trigger placement change to show/hide content sections
+                const event = new Event('change');
+                placementRadio.dispatchEvent(event);
+            }
+
+            // 4. Set position
+            const positionSelector = document.getElementById('positionSelector');
+            if (positionSelector) {
+                positionSelector.value = suggestion.positionValue;
+            }
+
+            // Scroll to campaign settings
+            document.querySelector('.section h2.section-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Show success message
+            alert('✅ 設定を適用しました！\n下記のキャンペーン設定を確認してください。');
+        }
+
         // Calculate optimal parameters from budget
         async function calculateFromBudget() {
             const budget = parseInt(document.getElementById('budgetInput').value);
@@ -923,9 +988,13 @@
                 if (pattern1Days >= 7) {
                     suggestions.push({
                         duration: `${pattern1Days}日間`,
+                        durationDays: pattern1Days,
                         target: '全ユーザー',
+                        targetType: 'all',
                         placement: 'ホームページ',
+                        placementType: 'home',
                         position: 'ランダム',
+                        positionValue: 'random',
                         impressions: Math.floor(yesterdayDAU * pattern1Days * 0.25),
                         cost: Math.floor(yesterdayDAU * pattern1Days * 0.25) * 7
                     });
@@ -936,9 +1005,13 @@
                 if (pattern2Days >= 7) {
                     suggestions.push({
                         duration: `${pattern2Days}日間`,
+                        durationDays: pattern2Days,
                         target: '年齢層指定（約30%）',
+                        targetType: 'age',
                         placement: 'ホームページ',
+                        placementType: 'home',
                         position: '2枚目',
+                        positionValue: '2',
                         impressions: Math.floor(yesterdayDAU * pattern2Days * 0.3 * 0.5),
                         cost: Math.floor(yesterdayDAU * pattern2Days * 0.3 * 0.5) * 7
                     });
@@ -949,9 +1022,13 @@
                 if (pattern3Days >= 7) {
                     suggestions.push({
                         duration: `${pattern3Days}日間`,
+                        durationDays: pattern3Days,
                         target: '全ユーザー',
+                        targetType: 'all',
                         placement: 'フレンドページ',
+                        placementType: 'friends',
                         position: '1枚目',
+                        positionValue: '1',
                         impressions: Math.floor(yesterdayDAU * pattern3Days * 1.0 * 0.33),
                         cost: Math.floor(yesterdayDAU * pattern3Days * 1.0 * 0.33) * 7
                     });
@@ -981,6 +1058,9 @@
                             <p style="font-size: 1.2em; font-weight: 700; color: #667eea; margin-top: 10px;">
                                 <strong>推定費用: ¥${s.cost.toLocaleString()}</strong>
                             </p>
+                            <button type="button" class="btn-primary" style="margin-top: 15px; width: 100%;" onclick='applyBudgetSuggestion(${JSON.stringify(s)})'>
+                                ✅ この設定を適用
+                            </button>
                         </div>
                     `;
                 });
