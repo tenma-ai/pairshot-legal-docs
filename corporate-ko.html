@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기업 광고 - PairShot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #00BFFF 0%, #667eea 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3.5em;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .content {
+            padding: 60px 40px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            font-size: 2.2em;
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .feature-description {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 0 -40px -60px -40px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 20px 60px;
+            font-size: 1.3em;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 50px;
+            margin-top: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .contact-info {
+            margin-top: 40px;
+            font-size: 1.1em;
+        }
+
+        .highlight {
+            background: rgba(255,255,255,0.2);
+            padding: 3px 10px;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .hero-stats {
+                gap: 30px;
+            }
+
+            .stat-number {
+                font-size: 2.5em;
+            }
+
+            .content {
+                padding: 40px 20px;
+            }
+
+            .cta-section {
+                padding: 40px 20px;
+                margin: 0 -20px -40px -20px;
+            }
+
+            header {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 커플 중심<br>광고 가능</h1>
+            <p class="subtitle">PairShot으로 로맨스 및 커플 서비스를 효과적으로 홍보하세요</p>
+
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">70%+</span>
+                    <span class="stat-label">DAU/MAU 비율</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">커플 사용자</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">매일</span>
+                    <span class="stat-label">활성 사용</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="section">
+                <h2>🌟 PairShot 광고의 강점</h2>
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="feature-icon">💑</div>
+                        <div class="feature-title">100% 커플 사용자</div>
+                        <div class="feature-description">
+                            모든 사용자가 커플로 등록되어 있습니다. 데이트, 여행, 선물 및 기타 커플 중심 서비스에 완벽한 타겟팅.
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-title">놀라운 70%+ DAU/MAU</div>
+                        <div class="feature-description">
+                            월간 활성 사용자의 70% 이상이 매일 앱을 사용합니다. 높은 유지율과 참여도.
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-title">유연한 타겟팅</div>
+                        <div class="feature-description">
+                            연령 타겟팅, 사용자 수 지정 또는 전체 사용자 전달. 목표에 맞는 유연한 전달 설정.
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <div class="feature-title">자연스러운 광고 경험</div>
+                        <div class="feature-description">
+                            카드 UI에 완전히 통합됨. 사용자 경험을 해치지 않으면서 높은 클릭률.
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">💰</div>
+                        <div class="feature-title">명확한 가격</div>
+                        <div class="feature-description">
+                            노출당 ¥7의 투명한 가격. 사전에 정확한 비용 시뮬레이션 가능.
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <div class="feature-title">빠른 런칭</div>
+                        <div class="feature-description">
+                            2 영업일 이내 검토 완료. 캠페인을 빠르게 시작하세요.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📢 최적의 서비스</h2>
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="feature-icon">🏨</div>
+                        <div class="feature-title">여행 및 숙박</div>
+                        <div class="feature-description">
+                            커플 친화적인 호텔, 료칸, 여행 패키지
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🍽️</div>
+                        <div class="feature-title">식사 및 레스토랑</div>
+                        <div class="feature-description">
+                            기념일 디너, 커플 좌석, 특별 코스
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🎁</div>
+                        <div class="feature-title">선물 및 액세서리</div>
+                        <div class="feature-description">
+                            페어 링, 커플 액세서리, 기념일 선물
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📸</div>
+                        <div class="feature-title">사진 스튜디오</div>
+                        <div class="feature-description">
+                            커플 사진, 기념 촬영, 웨딩 사진
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🎪</div>
+                        <div class="feature-title">엔터테인먼트</div>
+                        <div class="feature-description">
+                            데이트 장소, 활동, 이벤트
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">💍</div>
+                        <div class="feature-title">브라이덜</div>
+                        <div class="feature-description">
+                            웨딩 장소, 플래너, 링
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 style="color: white;">오늘 광고 시작하기</h2>
+            <p style="font-size: 1.2em; margin-top: 20px;">
+                <span class="highlight">높은 참여도</span>의 광고로 커플에게 도달하고<br>
+                서비스를 효과적으로 홍보하세요
+            </p>
+            <a href="ad-application-ko.html" class="cta-button">
+                📝 지금 신청하기
+            </a>
+            <div class="contact-info">
+                <p>문의하기</p>
+                <p><strong>📧 pairshot@gmail.com</strong></p>
+                <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.9;">
+                    2 영업일 이내 답변 드립니다
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

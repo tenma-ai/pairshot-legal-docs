@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>광고 신청 양식 - PairShot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #00BFFF 0%, #667eea 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e1e5e9;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .required {
+            color: #ff4444;
+            margin-left: 4px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option,
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .duration-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .duration-btn {
+            padding: 10px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .duration-btn:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .duration-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .custom-date-range {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .custom-date-range.active {
+            display: grid;
+        }
+
+        .position-selector {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+            background: white;
+            cursor: pointer;
+        }
+
+        .position-selector:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.2);
+        }
+
+        .file-upload {
+            border: 2px dashed #e1e5e9;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .cost-calculator {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .cost-result {
+            font-size: 2em;
+            font-weight: 700;
+            color: #667eea;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .cost-formula {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 0.9em;
+            line-height: 2;
+        }
+
+        .card-preview {
+            max-width: 350px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 9 / 17;
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            position: relative;
+        }
+
+        /* Front: 2 photos stacked vertically */
+        .card-photos {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card-photo {
+            flex: 1;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        /* Back: 2 comment sections + link */
+        .card-comments {
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 60px);
+            padding: 70px 20px 10px;
+            gap: 10px;
+        }
+
+        .comment-section {
+            flex: 1;
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .female-comment {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .male-comment {
+            background: rgba(0, 191, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.08);
+            border: 1px solid rgba(0, 191, 255, 0.5);
+        }
+
+        .comment-text {
+            font-size: 14px;
+            line-height: 22px;
+            color: #000;
+            word-wrap: break-word;
+        }
+
+        .card-link-button {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .flip-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            z-index: 10;
+        }
+
+        .info-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .duration-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .custom-date-range {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 광고 신청 양식</h1>
+            <p class="subtitle">PairShot에서 커플 중심 광고 신청하기</p>
+        </header>
+
+        <div class="content">
+            <form id="adApplicationForm">
+                <!-- Company Information -->
+                <div class="section">
+                    <h2 class="section-title">회사 정보</h2>
+
+                    <div class="form-group">
+                        <label>회사명<span class="required">*</span></label>
+                        <input type="text" id="companyName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>이메일 주소<span class="required">*</span></label>
+                        <input type="email" id="companyEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>전화번호</label>
+                        <input type="tel" id="companyPhone">
+                    </div>
+
+                    <div class="form-group">
+                        <label>웹사이트</label>
+                        <input type="url" id="companyWebsite" placeholder="https://">
+                    </div>
+                </div>
+
+                <!-- Budget Setting -->
+                <div class="section">
+                    <h2 class="section-title">💡 예산 설정 (선택 사항)</h2>
+                    <div class="form-group">
+                        <label>귀하의 예산 (¥)</label>
+                        <input type="number" id="budgetInput" placeholder="예: 100000" min="1000" step="1000">
+                        <div class="info-box">
+                            <p>예산을 입력하여 아래 캠페인 설정에 자동으로 입력될 최적의 전달 매개변수 제안을 받으세요</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="calculateFromBudget()">🔄 예산으로 계산</button>
+                    <div id="budgetResult" class="hidden"></div>
+                </div>
+
+                <!-- Campaign Settings -->
+                <div class="section">
+                    <h2 class="section-title">캠페인 설정</h2>
+
+                    <div class="form-group">
+                        <label>캠페인 기간<span class="required">*</span></label>
+                        <div class="duration-options">
+                            <button type="button" class="duration-btn" data-days="7">7일</button>
+                            <button type="button" class="duration-btn" data-days="14">14일</button>
+                            <button type="button" class="duration-btn" data-days="30">30일</button>
+                            <button type="button" class="duration-btn" data-days="60">60일</button>
+                            <button type="button" class="duration-btn" data-days="90">90일</button>
+                            <button type="button" class="duration-btn" data-days="custom">사용자 지정</button>
+                        </div>
+                        <div class="custom-date-range" id="customDateRange">
+                            <div>
+                                <label>시작일</label>
+                                <input type="date" id="startDate">
+                            </div>
+                            <div>
+                                <label>종료일</label>
+                                <input type="date" id="endDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>대상 사용자<span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="targetType" value="all" checked>
+                                모든 사용자
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="targetType" value="age">
+                                연령별
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="targetType" value="count">
+                                개수별
+                            </label>
+                        </div>
+                        <div id="ageRange" class="hidden" style="margin-top: 15px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div>
+                                    <label>최소 연령</label>
+                                    <input type="number" id="minAge" min="18" max="100">
+                                </div>
+                                <div>
+                                    <label>최대 연령</label>
+                                    <input type="number" id="maxAge" min="18" max="100">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="targetCount" class="hidden" style="margin-top: 15px;">
+                            <label>사용자 수</label>
+                            <input type="number" id="userCount" min="100" step="100">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>게재 위치<span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="placement" value="home" checked>
+                                홈 페이지
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="placement" value="friends">
+                                친구 페이지
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>페이지 위치<span class="required">*</span></label>
+                        <select id="positionSelector" class="position-selector" required>
+                            <option value="">위치 선택</option>
+                            <option value="random">랜덤</option>
+                            <!-- Options will be generated by JavaScript -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Ad Content -->
+                <div class="section">
+                    <h2 class="section-title">광고 콘텐츠</h2>
+
+                    <div class="form-group">
+                        <label>사진 1<span class="required">*</span></label>
+                        <div class="file-upload" onclick="document.getElementById('photo1').click()">
+                            <input type="file" id="photo1" accept="image/*">
+                            <p>📷 이미지 업로드하기</p>
+                            <p style="font-size: 0.9em; color: #666; margin-top: 5px;">권장: 세로 방향 (3:4 비율)</p>
+                        </div>
+                        <img id="photo1Preview" class="preview-image hidden">
+                    </div>
+
+                    <div class="form-group">
+                        <label>사진 2<span class="required">*</span></label>
+                        <div class="file-upload" onclick="document.getElementById('photo2').click()">
+                            <input type="file" id="photo2" accept="image/*">
+                            <p>📷 이미지 업로드하기</p>
+                            <p style="font-size: 0.9em; color: #666; margin-top: 5px;">권장: 세로 방향 (3:4 비율)</p>
+                        </div>
+                        <img id="photo2Preview" class="preview-image hidden">
+                    </div>
+
+                    <div id="homeContent">
+                        <div class="form-group">
+                            <label>코멘트 1<span class="required">*</span></label>
+                            <textarea id="comment1" placeholder="카드에 표시되는 코멘트 (앞면)" maxlength="200"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>코멘트 2<span class="required">*</span></label>
+                            <textarea id="comment2" placeholder="카드에 표시되는 코멘트 (뒷면)" maxlength="200"></textarea>
+                        </div>
+                    </div>
+
+                    <div id="friendsContent" class="hidden">
+                        <div class="form-group">
+                            <label>캡션<span class="required">*</span></label>
+                            <textarea id="caption" placeholder="게시물과 함께 표시되는 캡션" maxlength="500"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>링크 URL (선택 사항)</label>
+                        <input type="url" id="linkUrl" placeholder="https://">
+                        <div class="info-box">
+                            <p>링크를 설정하면 "사이트 방문" 버튼으로 표시됩니다. 사용자는 클릭하여 웹사이트를 방문할 수 있습니다. 비워둘 수 있습니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="section">
+                    <h2 class="section-title">미리보기</h2>
+                    <div id="cardPreviewContainer">
+                        <p style="text-align: center; color: #666;">사진을 업로드하고 코멘트를 입력하면 미리보기가 나타납니다</p>
+                    </div>
+                </div>
+
+                <!-- Cost Simulation -->
+                <div class="section">
+                    <button type="button" class="btn-secondary" onclick="calculateCost()">💰 비용 시뮬레이션</button>
+                    <div id="costResult" class="hidden"></div>
+                </div>
+
+                <!-- Submit -->
+                <div class="section">
+                    <div id="messageContainer"></div>
+                    <button type="submit" class="btn-primary" id="submitBtn">📤 신청 제출</button>
+                    <div class="info-box" style="margin-top: 20px;">
+                        <p><strong>📧 문의:</strong> pairshot@gmail.com</p>
+                        <p style="margin-top: 5px;">제출 후 2 영업일 이내 답변 드립니다</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const supabaseUrl = window.SUPABASE_CONFIG.url;
+        const supabaseKey = window.SUPABASE_CONFIG.anonKey;
+
+        // Generate position options
+        const positionSelector = document.getElementById('positionSelector');
+
+        // Helper function to get ordinal in Korean
+        function getOrdinal(n) {
+            return n + '번째 카드';
+        }
+
+        // Add position options 2-100 (or 1-100 for friends page)
+        function updatePositionOptions(placement) {
+            const startPos = placement === 'friends' ? 1 : 2;
+            // Remove existing options except first two (placeholder and random)
+            while (positionSelector.options.length > 2) {
+                positionSelector.remove(2);
+            }
+
+            for (let i = startPos; i <= 100; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = getOrdinal(i);
+                positionSelector.appendChild(option);
+            }
+        }
+
+        updatePositionOptions('home');
+
+        // Duration selection
+        document.querySelectorAll('.duration-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                if (this.dataset.days === 'custom') {
+                    document.getElementById('customDateRange').classList.add('active');
+                } else {
+                    document.getElementById('customDateRange').classList.remove('active');
+                }
+            });
+        });
+
+        // Position selection is handled by select element, no additional handler needed
+
+        // Target type selection
+        document.querySelectorAll('input[name="targetType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('ageRange').classList.add('hidden');
+                document.getElementById('targetCount').classList.add('hidden');
+
+                if (this.value === 'age') {
+                    document.getElementById('ageRange').classList.remove('hidden');
+                } else if (this.value === 'count') {
+                    document.getElementById('targetCount').classList.remove('hidden');
+                }
+            });
+        });
+
+        // Placement selection
+        document.querySelectorAll('input[name="placement"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'home') {
+                    document.getElementById('homeContent').classList.remove('hidden');
+                    document.getElementById('friendsContent').classList.add('hidden');
+                    updatePositionOptions('home');
+                } else {
+                    document.getElementById('homeContent').classList.add('hidden');
+                    document.getElementById('friendsContent').classList.remove('hidden');
+                    updatePositionOptions('friends');
+                }
+            });
+        });
+
+        // Photo upload preview
+        ['photo1', 'photo2'].forEach(photoId => {
+            document.getElementById(photoId).addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.getElementById(photoId + 'Preview');
+                        preview.src = e.target.result;
+                        preview.classList.remove('hidden');
+                        updatePreview();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        // Update preview when content changes
+        ['comment1', 'comment2', 'caption'].forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener('input', updatePreview);
+            }
+        });
+
+        function updatePreview() {
+            const placement = document.querySelector('input[name="placement"]:checked').value;
+            const photo1 = document.getElementById('photo1Preview').src;
+            const photo2 = document.getElementById('photo2Preview').src;
+            const linkUrl = document.getElementById('linkUrl').value;
+
+            if (!photo1 || !photo2) return;
+
+            let previewHTML = '';
+
+            if (placement === 'home') {
+                const comment1 = document.getElementById('comment1').value;
+                const comment2 = document.getElementById('comment2').value;
+
+                previewHTML = `
+                    <div class="card-preview">
+                        <button class="flip-button" onclick="document.getElementById('cardInner').classList.toggle('flipped')">↻ 카드 뒤집기</button>
+                        <div class="card-inner" id="cardInner">
+                            <div class="card-front">
+                                <div class="card-photos">
+                                    <img src="${photo1}" class="card-photo" alt="Photo 1">
+                                    <img src="${photo2}" class="card-photo" alt="Photo 2">
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="card-comments">
+                                    <div class="comment-section female-comment">
+                                        <p class="comment-text">${comment1 || '코멘트 1을 입력해 주세요'}</p>
+                                    </div>
+                                    <div class="comment-section male-comment">
+                                        <p class="comment-text">${comment2 || '코멘트 2를 입력해 주세요'}</p>
+                                    </div>
+                                </div>
+                                <button class="card-link-button" ${linkUrl ? `data-url="${linkUrl}" onclick="window.open(this.getAttribute('data-url'), '_blank')" style="cursor: pointer;"` : `style="opacity: 0.6; cursor: default;" onclick="alert('미리보기 전용입니다. 링크 URL 필드에 실제 링크를 입력하세요.')"`}>🌐 사이트 방문</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const caption = document.getElementById('caption').value;
+
+                previewHTML = `
+                    <div class="card-preview">
+                        <img src="${photo1}" class="card-photo" alt="Photo">
+                        <div class="friends-caption">
+                            <p class="caption-text">${caption || '캡션을 입력해 주세요'}</p>
+                        </div>
+                        ${linkUrl ? `<button class="card-link-button" data-url="${linkUrl}" onclick="window.open(this.getAttribute('data-url'), '_blank')" style="cursor: pointer;">🌐 사이트 방문</button>` : ''}
+                    </div>
+                `;
+            }
+
+            document.getElementById('cardPreviewContainer').innerHTML = previewHTML;
+        }
+
+        async function calculateCost() {
+            // Get yesterday's DAU from database
+            try {
+                const response = await fetch(`${supabaseUrl}/rest/v1/rpc/get_yesterday_dau`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                let yesterdayDAU = 1500; // Default fallback
+                if (response.ok) {
+                    const data = await response.json();
+                    yesterdayDAU = data || 1500;
+                }
+
+                // Get duration
+                const activeDurationBtn = document.querySelector('.duration-btn.active');
+                let durationDays = 0;
+
+                if (activeDurationBtn) {
+                    if (activeDurationBtn.dataset.days === 'custom') {
+                        const startDate = new Date(document.getElementById('startDate').value);
+                        const endDate = new Date(document.getElementById('endDate').value);
+                        durationDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+                    } else {
+                        durationDays = parseInt(activeDurationBtn.dataset.days);
+                    }
+                }
+
+                // Get target percentage
+                const targetType = document.querySelector('input[name="targetType"]:checked').value;
+                let targetPercentage = 1.0;
+
+                if (targetType === 'age') {
+                    targetPercentage = 0.3; // Estimated 30% for age targeting
+                } else if (targetType === 'count') {
+                    const count = parseInt(document.getElementById('userCount').value) || 0;
+                    targetPercentage = count / (yesterdayDAU * 2); // Assuming 2 users per couple
+                }
+
+                // Get position multiplier
+                const pagePosition = positionSelector.value;
+                let positionMultiplier = 0;
+
+                if (pagePosition) {
+                    if (pagePosition === 'random') {
+                        positionMultiplier = 0.25;
+                    } else {
+                        positionMultiplier = 1 / parseInt(pagePosition);
+                    }
+                }
+
+                // Get placement multiplier
+                const placement = document.querySelector('input[name="placement"]:checked').value;
+                const placementMultiplier = placement === 'friends' ? 0.33 : 1.0;
+
+                // Calculate cost
+                const estimatedImpressions = Math.round(yesterdayDAU * durationDays * targetPercentage * positionMultiplier * placementMultiplier);
+                const totalCost = estimatedImpressions * 7;
+
+                // Display result
+                const resultHTML = `
+                    <div class="cost-calculator">
+                        <h3 style="text-align: center; margin-bottom: 20px;">비용 시뮬레이션 결과</h3>
+                        <div class="cost-result">¥${totalCost.toLocaleString()}</div>
+                        <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                            예상 노출 수: ${estimatedImpressions.toLocaleString()}회
+                        </p>
+                        <div class="cost-formula">
+                            <strong>공식:</strong><br>
+                            어제의 DAU × 기간 × 대상 % × 1/위치 ${placement === 'friends' ? '× 친구 계수' : ''} × ¥7<br><br>
+                            = ${yesterdayDAU} × ${durationDays}일 × ${(targetPercentage * 100).toFixed(1)}% × ${positionMultiplier.toFixed(3)} ${placement === 'friends' ? '× 0.33' : ''} × ¥7<br>
+                            = ${estimatedImpressions.toLocaleString()} 노출 수 × ¥7<br>
+                            = <strong>¥${totalCost.toLocaleString()}</strong>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('costResult').innerHTML = resultHTML;
+                document.getElementById('costResult').classList.remove('hidden');
+            } catch (error) {
+                console.error('Error calculating cost:', error);
+                alert('비용 계산 중 오류가 발생했습니다. 다시 시도하세요.');
+            }
+        }
+
+        // Apply budget suggestion to form
+        function applyBudgetSuggestion(suggestion) {
+            // 1. Set duration
+            const durationBtns = document.querySelectorAll('.duration-btn');
+            let durationSet = false;
+
+            durationBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.days === suggestion.durationDays.toString()) {
+                    btn.classList.add('active');
+                    durationSet = true;
+                }
+            });
+
+            // If no matching button, use custom
+            if (!durationSet) {
+                const customBtn = document.querySelector('.duration-btn[data-days="custom"]');
+                if (customBtn) {
+                    customBtn.classList.add('active');
+                    document.getElementById('customDateRange').style.display = 'grid';
+                    const today = new Date();
+                    const endDate = new Date(today);
+                    endDate.setDate(endDate.getDate() + suggestion.durationDays);
+                    document.getElementById('startDate').valueAsDate = today;
+                    document.getElementById('endDate').valueAsDate = endDate;
+                }
+            } else {
+                document.getElementById('customDateRange').style.display = 'none';
+            }
+
+            // 2. Set target type
+            const targetRadio = document.querySelector(`input[name="targetType"][value="${suggestion.targetType}"]`);
+            if (targetRadio) {
+                targetRadio.checked = true;
+            }
+
+            // 3. Set placement
+            const placementRadio = document.querySelector(`input[name="placement"][value="${suggestion.placementType}"]`);
+            if (placementRadio) {
+                placementRadio.checked = true;
+                const event = new Event('change');
+                placementRadio.dispatchEvent(event);
+            }
+
+            // 4. Set position
+            const positionSelector = document.getElementById('positionSelector');
+            if (positionSelector) {
+                positionSelector.value = suggestion.positionValue;
+            }
+
+            // Scroll to campaign settings
+            document.querySelector('.section h2.section-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            alert('✅ 설정이 적용되었습니다!\n아래 캠페인 설정을 확인하세요.');
+        }
+
+        async function calculateFromBudget() {
+            const budget = parseInt(document.getElementById('budgetInput').value);
+
+            if (!budget || budget < 1000) {
+                alert('최소 ¥1,000의 예산을 입력해 주세요');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${supabaseUrl}/rest/v1/rpc/get_yesterday_dau`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                });
+
+                const data = await response.json();
+                const yesterdayDAU = data || 100;
+                const targetImpressions = Math.floor(budget / 7);
+
+                const suggestions = [];
+
+                // Pattern 1: All users, home, random position
+                const pattern1Days = Math.min(Math.floor(targetImpressions / (yesterdayDAU * 0.25)), 30);
+                if (pattern1Days >= 7) {
+                    suggestions.push({
+                        duration: `${pattern1Days}일`,
+                        durationDays: pattern1Days,
+                        target: '모든 사용자',
+                        targetType: 'all',
+                        placement: '홈 페이지',
+                        placementType: 'home',
+                        position: '랜덤',
+                        positionValue: 'random',
+                        impressions: Math.floor(yesterdayDAU * pattern1Days * 0.25),
+                        cost: Math.floor(yesterdayDAU * pattern1Days * 0.25) * 7
+                    });
+                }
+
+                // Pattern 2: Age targeting, home, 2nd position
+                const pattern2Days = Math.min(Math.floor(targetImpressions / (yesterdayDAU * 0.3 * 0.5)), 30);
+                if (pattern2Days >= 7) {
+                    suggestions.push({
+                        duration: `${pattern2Days}일`,
+                        durationDays: pattern2Days,
+                        target: '연령 타겟팅 (~30%)',
+                        targetType: 'age',
+                        placement: '홈 페이지',
+                        placementType: 'home',
+                        position: '2번째 카드',
+                        positionValue: '2',
+                        impressions: Math.floor(yesterdayDAU * pattern2Days * 0.3 * 0.5),
+                        cost: Math.floor(yesterdayDAU * pattern2Days * 0.3 * 0.5) * 7
+                    });
+                }
+
+                // Pattern 3: All users, friends, 1st position
+                const pattern3Days = Math.min(Math.floor(targetImpressions / (yesterdayDAU * 1.0 * 0.33)), 30);
+                if (pattern3Days >= 7) {
+                    suggestions.push({
+                        duration: `${pattern3Days}일`,
+                        durationDays: pattern3Days,
+                        target: '모든 사용자',
+                        targetType: 'all',
+                        placement: '친구 페이지',
+                        placementType: 'friends',
+                        position: '1번째 카드',
+                        positionValue: '1',
+                        impressions: Math.floor(yesterdayDAU * pattern3Days * 1.0 * 0.33),
+                        cost: Math.floor(yesterdayDAU * pattern3Days * 1.0 * 0.33) * 7
+                    });
+                }
+
+                suggestions.sort((a, b) => Math.abs(a.cost - budget) - Math.abs(b.cost - budget));
+
+                let resultHTML = `
+                    <div class="cost-result">
+                        <div class="result-header">
+                            <h3>💡 추천 옵션</h3>
+                            <p>귀하의 예산 <strong>¥${budget.toLocaleString()}</strong>을 기반으로</p>
+                        </div>
+                `;
+
+                suggestions.forEach((suggestion, index) => {
+                    const isRecommended = index === 0;
+                    resultHTML += `
+                        <div class="suggestion-card ${isRecommended ? 'recommended' : ''}">
+                            ${isRecommended ? '<div class="recommended-badge">⭐ 가장 추천</div>' : ''}
+                            <div class="suggestion-details">
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">기간:</span>
+                                    <span class="suggestion-value">${suggestion.duration}</span>
+                                </div>
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">대상:</span>
+                                    <span class="suggestion-value">${suggestion.target}</span>
+                                </div>
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">게재 위치:</span>
+                                    <span class="suggestion-value">${suggestion.placement}</span>
+                                </div>
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">위치:</span>
+                                    <span class="suggestion-value">${suggestion.position}</span>
+                                </div>
+                                <div class="suggestion-row">
+                                    <span class="suggestion-label">예상 노출 수:</span>
+                                    <span class="suggestion-value">${suggestion.impressions.toLocaleString()}</span>
+                                </div>
+                                <div class="suggestion-row total">
+                                    <span class="suggestion-label">예상 비용:</span>
+                                    <span class="suggestion-value">¥${suggestion.cost.toLocaleString()}</span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-primary" style="margin-top: 15px; width: 100%;" onclick='applyBudgetSuggestion(${JSON.stringify(suggestion)})'>
+                                ✅ 이 설정 적용
+                            </button>
+                        </div>
+                    `;
+                });
+
+                resultHTML += `
+                        <div class="info-box" style="margin-top: 20px;">
+                            <p><strong>참고:</strong> 이는 귀하의 예산을 기반으로 한 제안입니다. 필요에 따라 위의 매개변수를 조정할 수 있습니다.</p>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('budgetResult').innerHTML = resultHTML;
+                document.getElementById('budgetResult').classList.remove('hidden');
+            } catch (error) {
+                console.error('Error calculating from budget:', error);
+                alert('예산 계산 중 오류가 발생했습니다. 다시 시도하세요.');
+            }
+        }
+
+        // Form submission
+        document.getElementById('adApplicationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const messageContainer = document.getElementById('messageContainer');
+
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ 제출 중...';
+
+            try {
+                // Get form data
+                const activeDurationBtn = document.querySelector('.duration-btn.active');
+                let durationDays = 0;
+                let startDate = null;
+                let endDate = null;
+
+                if (activeDurationBtn) {
+                    if (activeDurationBtn.dataset.days === 'custom') {
+                        startDate = document.getElementById('startDate').value;
+                        endDate = document.getElementById('endDate').value;
+                        durationDays = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
+                    } else {
+                        durationDays = parseInt(activeDurationBtn.dataset.days);
+                    }
+                }
+
+                const targetType = document.querySelector('input[name="targetType"]:checked').value;
+                const placement = document.querySelector('input[name="placement"]:checked').value;
+                const pagePosition = positionSelector.value;
+
+                // Upload photos to storage
+                const photo1File = document.getElementById('photo1').files[0];
+                const photo2File = document.getElementById('photo2').files[0];
+
+                if (!photo1File || !photo2File) {
+                    throw new Error('두 사진을 모두 업로드해 주세요');
+                }
+
+                // Upload photo 1
+                const photo1Ext = photo1File.name.split('.').pop();
+                const photo1Path = `ad-applications/${Date.now()}_1.${photo1Ext}`;
+                const photo1Upload = await fetch(`${supabaseUrl}/storage/v1/object/card-photos/${photo1Path}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${supabaseKey}`
+                    },
+                    body: photo1File
+                });
+
+                if (!photo1Upload.ok) throw new Error('사진 1 업로드 실패');
+                const photo1Url = `${supabaseUrl}/storage/v1/object/public/card-photos/${photo1Path}`;
+
+                // Upload photo 2
+                const photo2Ext = photo2File.name.split('.').pop();
+                const photo2Path = `ad-applications/${Date.now()}_2.${photo2Ext}`;
+                const photo2Upload = await fetch(`${supabaseUrl}/storage/v1/object/card-photos/${photo2Path}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${supabaseKey}`
+                    },
+                    body: photo2File
+                });
+
+                if (!photo2Upload.ok) throw new Error('사진 2 업로드 실패');
+                const photo2Url = `${supabaseUrl}/storage/v1/object/public/card-photos/${photo2Path}`;
+
+                // Calculate estimated cost
+                const yesterdayDAU = 1500; // Default
+                let targetPercentage = 1.0;
+                if (targetType === 'age') {
+                    targetPercentage = 0.3;
+                } else if (targetType === 'count') {
+                    const count = parseInt(document.getElementById('userCount').value) || 0;
+                    targetPercentage = count / (yesterdayDAU * 2);
+                }
+
+                const positionMultiplier = pagePosition === 'random' ? 0.25 : (1 / parseInt(pagePosition));
+                const placementMultiplier = placement === 'friends' ? 0.33 : 1.0;
+                const estimatedImpressions = Math.round(yesterdayDAU * durationDays * targetPercentage * positionMultiplier * placementMultiplier);
+                const estimatedCost = estimatedImpressions * 7;
+
+                // Prepare application data
+                const applicationData = {
+                    company_name: document.getElementById('companyName').value,
+                    company_email: document.getElementById('companyEmail').value,
+                    company_phone: document.getElementById('companyPhone').value || null,
+                    company_website: document.getElementById('companyWebsite').value || null,
+                    duration_days: durationDays,
+                    start_date: startDate,
+                    end_date: endDate,
+                    target_type: targetType,
+                    target_age_min: targetType === 'age' ? parseInt(document.getElementById('minAge').value) : null,
+                    target_age_max: targetType === 'age' ? parseInt(document.getElementById('maxAge').value) : null,
+                    target_count: targetType === 'count' ? parseInt(document.getElementById('userCount').value) : null,
+                    target_percentage: targetPercentage,
+                    placement: placement,
+                    page_position: pagePosition,
+                    photo1_url: photo1Url,
+                    photo2_url: photo2Url,
+                    comment1: placement === 'home' ? document.getElementById('comment1').value : null,
+                    comment2: placement === 'home' ? document.getElementById('comment2').value : null,
+                    caption: placement === 'friends' ? document.getElementById('caption').value : null,
+                    link_url: document.getElementById('linkUrl').value,
+                    estimated_dau: yesterdayDAU,
+                    estimated_impressions: estimatedImpressions,
+                    estimated_cost: estimatedCost,
+                    status: 'pending'
+                };
+
+                // Submit to database
+                const response = await fetch(`${supabaseUrl}/rest/v1/ad_applications`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify(applicationData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('신청 제출 실패');
+                }
+
+                // Show success message
+                messageContainer.innerHTML = `
+                    <div class="success-message">
+                        <h3>✓ 신청이 성공적으로 제출되었습니다!</h3>
+                        <p>신청해 주셔서 감사합니다. 검토 후 2 영업일 이내에 답변 드리겠습니다.</p>
+                        <p style="margin-top: 10px;">확인 이메일이 다음 주소로 전송됩니다: ${applicationData.company_email}</p>
+                    </div>
+                `;
+
+                // Reset form
+                document.getElementById('adApplicationForm').reset();
+                document.getElementById('photo1Preview').classList.add('hidden');
+                document.getElementById('photo2Preview').classList.add('hidden');
+                document.getElementById('cardPreviewContainer').innerHTML = '<p style="text-align: center; color: #666;">사진을 업로드하고 코멘트를 입력하면 미리보기가 나타납니다</p>';
+                document.getElementById('costResult').classList.add('hidden');
+                document.querySelectorAll('.duration-btn').forEach(btn => btn.classList.remove('active'));
+
+            } catch (error) {
+                console.error('Submission error:', error);
+                messageContainer.innerHTML = `
+                    <div class="error-message">
+                        <h3>✗ 제출 실패</h3>
+                        <p>${error.message}</p>
+                        <p style="margin-top: 10px;">다시 시도하거나 pairshot@gmail.com으로 문의하세요.</p>
+                    </div>
+                `;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📤 신청 제출';
+            }
+        });
+    </script>
+</body>
+</html>
