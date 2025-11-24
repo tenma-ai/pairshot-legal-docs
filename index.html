@@ -133,6 +133,12 @@
                     headerSubtitle: '法律文件与支持',
                     languageSelectTitle: '请选择您的语言',
                     lastUpdated: '最后更新: 2025年8月21日'
+                },
+                ko: {
+                    title: 'PairShot - 법적 문서',
+                    headerSubtitle: '법적 문서 및 지원',
+                    languageSelectTitle: '언어를 선택하세요',
+                    lastUpdated: '최종 업데이트: 2025년 8월 21일'
                 }
             };
             
@@ -146,19 +152,23 @@
                 currentLang = 'zh';
             } else if (hash === 'english') {
                 currentLang = 'en';
+            } else if (hash === 'korean') {
+                currentLang = 'ko';
             } else {
                 // Fall back to browser language
                 if (lang.startsWith('ja')) {
                     currentLang = 'ja';
                 } else if (lang.startsWith('zh')) {
                     currentLang = 'zh';
+                } else if (lang.startsWith('ko')) {
+                    currentLang = 'ko';
                 }
             }
             
             // Apply translations
             const trans = translations[currentLang];
             document.title = trans.title;
-            document.documentElement.lang = currentLang === 'zh' ? 'zh' : currentLang === 'ja' ? 'ja' : 'en';
+            document.documentElement.lang = currentLang === 'zh' ? 'zh' : currentLang === 'ja' ? 'ja' : currentLang === 'ko' ? 'ko' : 'en';
             
             const headerSubtitle = document.getElementById('header-subtitle');
             const languageSelectTitle = document.getElementById('language-select-title');
@@ -212,6 +222,10 @@
                 <a href="#chinese" class="language-card">
                     <h3>🇨🇳 中文</h3>
                     <p>Chinese - 中国用户适用</p>
+                </a>
+                <a href="#korean" class="language-card">
+                    <h3>🇰🇷 한국어</h3>
+                    <p>Korean - 한국 거주자용</p>
                 </a>
             </div>
 
@@ -301,6 +315,36 @@
                     <a href="corporate-zh.html" class="document-link">
                         <h4>🎯 企业广告投放</h4>
                         <p>情侣专注广告服务</p>
+                    </a>
+                </div>
+            </div>
+
+            <div id="korean">
+                <h2>한국어판</h2>
+                <div class="document-grid">
+                    <a href="support-ko.html" class="document-link">
+                        <h4>🚀 헬프・서포트</h4>
+                        <p>FAQ, 문의, 문제 해결</p>
+                    </a>
+                    <a href="privacy-policy-ko.html" class="document-link">
+                        <h4>🔒 개인정보 처리방침</h4>
+                        <p>개인정보 취급에 관하여</p>
+                    </a>
+                    <a href="terms-of-service-ko.html" class="document-link">
+                        <h4>📋 이용약관</h4>
+                        <p>서비스 이용 조건</p>
+                    </a>
+                    <a href="community-guidelines-ko.html" class="document-link">
+                        <h4>👥 커뮤니티 가이드라인</h4>
+                        <p>안전한 이용을 위하여</p>
+                    </a>
+                    <a href="report-ko.html" class="document-link">
+                        <h4>📝 신고・문제 연락</h4>
+                        <p>약관 위반 등의 신고</p>
+                    </a>
+                    <a href="corporate-ko.html" class="document-link">
+                        <h4>🎯 법인 광고 게재</h4>
+                        <p>커플 특화 광고 안내</p>
                     </a>
                 </div>
             </div>
